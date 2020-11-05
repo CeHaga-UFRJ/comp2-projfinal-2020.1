@@ -1,0 +1,61 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <link rel="stylesheet" href="graph.css">
+    
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <div class="logo">
+                <img class="logoImg" src="mask.png" alt="" onclick="nextCountry()">
+                <h1>COVID-19</h1>
+            </div>
+        </div>
+        <div class="main">
+            <div class="sidebar">
+                <header>
+                    <form action="">
+                          <select id="rankType" name="rankType">
+                            <option onClick="hideDistancia()" value="maiorCaso">Maior número de casos</option>
+                            <option onClick="hideDistancia()" value="maiorRecuperado">Maior número de recuperados</option>
+                            <option onClick="hideDistancia()" value="maiorMorte">Maior número de mortos</option>
+                            <option onClick="hideDistancia()" value="crescCaso">Maior crescimento de casos</option>
+                            <option onClick="hideDistancia()" value="crescRecuperado">Maior crescimento de recuperados</option>
+                            <option onClick="hideDistancia()" value="crescMorte">Maior crescimento de mortos</option>
+                            <option onClick="hideDistancia()" value="mortalidade">Maior mortalidade</option>
+                            <option onClick="showDistancia()" value="maisProximo">Locais mais próximos do local com maior crescimento de casos</option>
+                          </select>
+        
+                        <br /><br />
+                          <label for="beginDate">De</label>
+                        <input type="date" id="beginDate" name="beginDate">
+                        <label for="endDate">até</label>
+                        <input type="date" id="endDate" name="endDate">
+        
+                        <label style="visibility: hidden;" id="labelDistancia" for="distancia">Distância</label>
+                        <input style="visibility: hidden;" type="number" id="distancia" name="distancia" min="1">
+        
+                        <br /><br />
+                          <input type="submit" value="Submit">
+                    </form>
+                </header>
+
+
+            </div>
+            <div class="canvasWrapperBig">
+                <div class="canvasWrapper" id="canvasWrapper"> 
+                    <canvas class="chart" id="chart" width="400px" height="400px"></canvas> 
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="graph.js"></script>
+    <script src="dataRequest.js"></script>
+</body>
+</html>

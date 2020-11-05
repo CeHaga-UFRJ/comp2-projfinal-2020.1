@@ -17,6 +17,7 @@ import covid.models.Pais;
 import covid.enums.StatusCaso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -55,6 +56,7 @@ public class APIReader {
         strDataFinal = dataFinal.toString();
 
         ArrayList<String> listaDePaises = listaPaises();
+        
 
         String paisNome = "";
         String paisCodigo = "";
@@ -63,6 +65,11 @@ public class APIReader {
         Float paisLongitude = (float) 0;
 
         for(String paisName: listaDePaises){
+        	
+        	if(paisName.charAt(0) != 'a') { 
+        		System.out.println("Skippando.");
+        		continue;
+        	}
 
             // String personalizada que varia de acordo com qual pais se trata, qual eh a data final e inicial do periodo em questao
             // e que tipo de informacao queremos, casos confirmados, casos de pessoas recuperadas e casos de pessoas que morreram.
@@ -99,6 +106,8 @@ public class APIReader {
                     	System.out.println("Resposta vazia.");
                     	continue;
                     }
+                    
+                                        
                     // for each que percorre todas datas do periodo em questao 
                     for (Object x : respostaJson) {
                         // pega todas informacoes acerca do pais em questao
@@ -116,6 +125,7 @@ public class APIReader {
                         qtdCasos = Integer.parseInt(((JSONObject) x).get("Cases").toString());
 
                         Medicao medicao = new Medicao(pais, dataMomento, qtdCasos, status);
+
                         listMedicao.add(medicao);
                     }
                 }catch (ParseException e) {

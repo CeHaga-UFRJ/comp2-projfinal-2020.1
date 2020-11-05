@@ -5,8 +5,12 @@ import covid.controller.files.CacheManager;
 import covid.enums.StatusCaso;
 import covid.models.Medicao;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -45,4 +49,25 @@ public class DataManager {
 //        }
 //        return list;
 //    }
+    
+    public DataManager.EstatisticaData getMedicaoList(StatusCaso status, LocalDateTime startDate, LocalDateTime endDate){
+    	
+    	CacheManager cm = new CacheManager();
+		
+		HashMap<String, Medicao> mapInicialHashMap = cm.readFile(status, startDate);
+		HashMap<String, Medicao> mapFinalHashMap = cm.readFile(status, endDate);
+		
+		return new EstatisticaData(mapInicialHashMap, mapFinalHashMap);
+    }
+    
+    public class EstatisticaData {
+    	HashMap<String, Medicao> mapInicialHashMap;
+    	HashMap<String, Medicao> mapFinalHashMap;
+    	public EstatisticaData(HashMap<String, Medicao> mapInicialHashMap, HashMap<String, Medicao> mapFinalHashMap) {
+    		this.mapInicialHashMap = mapInicialHashMap;
+    		this.mapFinalHashMap = mapFinalHashMap;
+    	}
+    }
+    
 }
+

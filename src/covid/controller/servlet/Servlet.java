@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import covid.controller.files.CacheManager;
+import covid.enums.StatusCaso;
+import covid.models.Medicao;
 
 
 @WebServlet("/Servlet")
@@ -28,8 +31,8 @@ public class Servlet extends HttpServlet {
 		String rankType = request.getParameter("rankType");
 		String startDate = request.getParameter("startDate");
 		String endDate = request.getParameter("endDate");
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.getWriter().println("brasil");		
+		response.setHeader("Access-Control-Allow-Origin", "*");	
+		
 		CacheManager cm = new CacheManager();
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
@@ -38,10 +41,15 @@ public class Servlet extends HttpServlet {
         LocalDateTime dataInicial = LocalDateTime.ofInstant(dataInicialInstant, ZoneOffset.UTC);
         LocalDateTime dataFinal = LocalDateTime.ofInstant(dataFinalInstant, ZoneOffset.UTC);
         
-        //if(rankType.equals("CONFIRMADOS") )
-		
+        StatusCaso statusCaso = StatusCaso.CONFIRMADOS;
+        //if(rankType.equals("CONFIRMADOS")) statusCaso = StatusCaso.CONFIRMADOS;
+		//outros
 
-		//cm.readFile(rankType, dataInicial);
+		HashMap<String, Medicao> mapInicialHashMap = cm.readFile(statusCaso, dataInicial);
+		HashMap<String, Medicao> mapFinalHashMap = cm.readFile(statusCaso, dataFinal);
+		
+		response.getWriter().println(mapInicialHashMap.values().toString());
+		response.getWriter().println("brasil");	
 	}
 
 }

@@ -33,7 +33,7 @@ public abstract class Estatistica {
     }
 
     public LocalDate dataFim(){
-        return dataFim();
+        return dataUltima;
     }
 
     public String getNome(){

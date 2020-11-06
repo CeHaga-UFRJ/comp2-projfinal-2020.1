@@ -1,7 +1,10 @@
 package covid.controller.servlet;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -13,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import covid.controller.data.DataManager;
 import covid.controller.files.CacheManager;
 import covid.enums.StatusCaso;
 import covid.models.Medicao;
@@ -33,23 +37,26 @@ public class Servlet extends HttpServlet {
 		String endDate = request.getParameter("endDate");
 		response.setHeader("Access-Control-Allow-Origin", "*");	
 		
-		CacheManager cm = new CacheManager();
+		HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> map = deserializeData();
+		System.out.println("WE DID IT BOIS??? " + map.containsKey(StatusCaso.MORTOS));
+		if(DataManager.map == null)
+			DataManager.map = map;
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
-    	Instant dataInicialInstant = Instant.from(formatter.parse(startDate));
-        Instant dataFinalInstant = Instant.from(formatter.parse(endDate));
-        LocalDateTime dataInicial = LocalDateTime.ofInstant(dataInicialInstant, ZoneOffset.UTC);
-        LocalDateTime dataFinal = LocalDateTime.ofInstant(dataFinalInstant, ZoneOffset.UTC);
-        
-        StatusCaso statusCaso = StatusCaso.CONFIRMADOS;
-        //if(rankType.equals("CONFIRMADOS")) statusCaso = StatusCaso.CONFIRMADOS;
-		//outros
-
-		HashMap<String, Medicao> mapInicialHashMap = cm.readFile(statusCaso, dataInicial);
-		HashMap<String, Medicao> mapFinalHashMap = cm.readFile(statusCaso, dataFinal);
-		
-		response.getWriter().println(mapInicialHashMap.values().toString());
-		response.getWriter().println("brasil");	
+		response.getWriter().println("Hello World");
+		response.getWriter().println("brasil");
+	}
+    
+	
+	public HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> deserializeData() {
+		InputStream inputStream = getServletContext().getResourceAsStream("/WEB-INF/DATA/SERIALIZED_DATA.ser");
+	    try (ObjectInputStream ois = new ObjectInputStream(inputStream)){
+	    	return (HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>>) ois.readObject();
+	    } 
+	    catch (IOException | ClassNotFoundException e){
+	       	System.out.println("Exception when reading obj");
+	    	e.printStackTrace();
+	        return null;
+	    }
 	}
 
 }

@@ -7,6 +7,7 @@ import covid.enums.StatusCaso;
 import covid.models.Medicao;
 import covid.models.ParOrdenado;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +18,8 @@ import java.util.List;
  */
 public class DataManager {
     private static DataManager dataManager;
+    
+    public static HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> map;
     
     private DataManager(){
 
@@ -49,14 +52,9 @@ public class DataManager {
     	return listRanking;
     }
     
+  //remover depois, não tem mais sentido manter 
     public DataManager.EstatisticaData getMedicaoList(StatusCaso status, LocalDateTime startDate, LocalDateTime endDate){
-    	
-    	CacheManager cm = new CacheManager();
-		
-		HashMap<String, Medicao> mapInicialHashMap = cm.readFile(status, startDate);
-		HashMap<String, Medicao> mapFinalHashMap = cm.readFile(status, endDate);
-		
-		return new EstatisticaData(mapInicialHashMap, mapFinalHashMap);
+		return new EstatisticaData(map.get(status).get(startDate), map.get(status).get(endDate));
     }
     
     public class EstatisticaData {

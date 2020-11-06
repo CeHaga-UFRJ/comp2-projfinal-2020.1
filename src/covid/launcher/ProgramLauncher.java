@@ -10,6 +10,8 @@ import java.util.List;
 
 
 import covid.controller.api.APIReader;
+import covid.controller.data.DataManager;
+import covid.controller.data.DataManager.EstatisticaData;
 import covid.controller.files.CacheManager;
 import covid.enums.StatusCaso;
 import covid.models.Medicao;
@@ -22,28 +24,6 @@ public class ProgramLauncher {
     	System.out.println("Hello World");
     	//InitializeData();
     	
-//    	DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
-//        Instant dataInicialInstant = Instant.from(formatter.parse("2020-03-01T00:00:00Z"));
-//        Instant dataFinalInstant = Instant.from(formatter.parse("2020-03-08T00:00:00Z"));
-//        LocalDateTime dataInicial = LocalDateTime.ofInstant(dataInicialInstant, ZoneOffset.UTC);
-//        LocalDateTime dataFinal = LocalDateTime.ofInstant(dataFinalInstant, ZoneOffset.UTC);
-//        
-//        List<Medicao> list = APIReader.getAllCountryCasesByPeriod(StatusCaso.CONFIRMADOS, dataInicial, dataFinal);
-//       	
-//        CacheManager cm = new CacheManager();
-//        for (Medicao medicao : list) {
-//        	System.out.println(medicao.getPais().getSlug() + ": " + medicao.getCasos());
-//        	cm.writeFile(medicao);
-//        }
-        
-    	
-    	
-//    	DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
-//    	Instant dataInicialInstant = Instant.from(formatter.parse("2020-03-01T00:00:00Z"));
-//    	LocalDateTime dataInicial = LocalDateTime.ofInstant(dataInicialInstant, ZoneOffset.UTC);
-//    	Medicao medicao = new Medicao(new Pais("brazil", "codigo", "brazil", 0, 0), dataInicial, 15, StatusCaso.CONFIRMADOS);
-//    	CacheManager cm = new CacheManager();
-//    	cm.writeFile(medicao);
     	
     }
     
@@ -72,13 +52,39 @@ public class ProgramLauncher {
         LocalDateTime dataInicial = LocalDateTime.ofInstant(dataInicialInstant, ZoneOffset.UTC);
         LocalDateTime dataFinal = LocalDateTime.ofInstant(dataFinalInstant, ZoneOffset.UTC);
         
-    	List<Medicao> list = APIReader.getAllCountryCasesByPeriod(StatusCaso.CONFIRMADOS, dataInicial, dataFinal);
+        HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> map = new HashMap<>();
+        
+        System.out.println("Fetching CONFIRMADOS");
+    	List<Medicao> listConfirmados = APIReader.getAllCountryCasesByPeriod(StatusCaso.CONFIRMADOS, dataInicial, dataFinal);
+    	map.put(StatusCaso.CONFIRMADOS, medicaoListToHashmap(listConfirmados));
+    	System.out.println("Fetching MORTOS");
+    	List<Medicao> listMortos = APIReader.getAllCountryCasesByPeriod(StatusCaso.MORTOS, dataInicial, dataFinal);
+    	map.put(StatusCaso.MORTOS, medicaoListToHashmap(listMortos));
+    	System.out.println("Fetching RECUPERADOS");
+    	List<Medicao> listRecuperados = APIReader.getAllCountryCasesByPeriod(StatusCaso.RECUPERADOS, dataInicial, dataFinal);
+    	map.put(StatusCaso.RECUPERADOS, medicaoListToHashmap(listRecuperados));
+
+    	CacheManager cm = new CacheManager();
+    	System.out.println("Serializing Data");
+    	cm.serializeData(map);
+    }
+    
+    public static void Teste() {
     	
-    	HashMap<LocalDate, HashMap<String, Medicao>> map = medicaoListToHashmap(list);
-    	for (HashMap<String, Medicao> medMap : map.values()) {
-			CacheManager cm = new CacheManager();
-			cm.writeFile(medMap);
-		}
+    	System.out.println("Testando");
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
+    	Instant dataInicialInstant = Instant.from(formatter.parse("2020-03-01T00:00:00Z"));
+        Instant dataFinalInstant = Instant.from(formatter.parse("2020-04-01T00:00:00Z"));
+        LocalDateTime dataInicial = LocalDateTime.ofInstant(dataInicialInstant, ZoneOffset.UTC);
+        LocalDateTime dataFinal = LocalDateTime.ofInstant(dataFinalInstant, ZoneOffset.UTC);
+        
+        StatusCaso statusCaso = StatusCaso.CONFIRMADOS;
+
+
+		EstatisticaData data = DataManager.getDataManager().getMedicaoList(statusCaso, dataInicial, dataFinal);
+		
+		System.out.println(data.mapInicialHashMap.get("austria").getCasos());
     }
     
     

@@ -2,8 +2,10 @@ package covid.controller.data;
 
 import covid.comparators.ParOrdenadoComparator;
 import covid.controller.files.CacheManager;
+import covid.controller.files.RankingExport;
 import covid.controller.rank.CrescimentoCasos;
 import covid.controller.rank.TotalCasos;
+import covid.enums.ExportType;
 import covid.enums.RankType;
 import covid.enums.StatusCaso;
 import covid.models.Medicao;
@@ -14,6 +16,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +27,11 @@ import org.json.simple.JSONObject;
 
 /**
  * @author Carlos Bravo - cehaga@dcc.ufrj.br
+ * @author Matheus Oliveira Silva - matheusflups8@gmail.com
+ * 
  */
+
+
 public class DataManager {
     private static DataManager dataManager;
     
@@ -97,9 +104,9 @@ public class DataManager {
         return list;
     }
     
-    public JSONArray calculateRanking(RankType type, LocalDateTime startDate, LocalDateTime endDate) {
+    public JSONArray calculateRanking(RankType rankType, ExportType exportType, LocalDateTime startDate, LocalDateTime endDate) {
     	List<ParOrdenado<String, Float>> list = null;
-    	switch(type) {
+    	switch(rankType) {
         case MAIOR_NUMERO_CONFIRMADOS:
             list = rankingCasesByPeriod(StatusCaso.CONFIRMADOS, startDate, endDate);
             break;
@@ -124,6 +131,11 @@ public class DataManager {
             list = null;
             break;
     }
+    	DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+    	String strDataInicial = startDate.format(formatter);
+    	String strDataFinal = endDate.format(formatter);
+    	
+        RankingExport.export(list, exportType, rankType, strDataInicial, strDataFinal);
     	
     	return toJson(list);
     }
@@ -158,9 +170,6 @@ public class DataManager {
     		this.mapInicialHashMap = mapInicialHashMap;
     		this.mapFinalHashMap = mapFinalHashMap;
     	}
-    }
-    
-    
-    
+    }    
 }
 

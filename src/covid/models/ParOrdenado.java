@@ -1,5 +1,11 @@
 package covid.models;
-
+/**
+ * Classe criada para ser um par ordenado de qualquer tipo.
+ * @author Matheus Oliveira Silva - matheusflups8@gmail.com
+ *
+ * @param <T>
+ * @param <E>
+ */
 public class ParOrdenado<T , E extends Number>  {
 	
 	private T pais;

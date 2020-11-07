@@ -25,14 +25,14 @@ public class ProgramLauncher {
     	System.out.println("Hello World");
     	loadData();
     	
-    	LocalDateTime startDate = LocalDateTime.of(2020, 3, 1, 0, 0);
-    	LocalDateTime endDate = LocalDateTime.of(2020, 11, 1, 0, 0);
-    	
-    	System.out.println(DataManager.getDataManager().getMap().get(StatusCaso.CONFIRMADOS).containsKey(startDate.toLocalDate()));
-
-    	
-    	System.out.println(DataManager.getDataManager().calculateRanking(RankType.MAIOR_NUMERO_CONFIRMADOS, startDate, endDate).toJSONString());
-    	
+//    	LocalDateTime startDate = LocalDateTime.of(2020, 3, 1, 0, 0);
+//    	LocalDateTime endDate = LocalDateTime.of(2020, 11, 1, 0, 0);
+//    	
+//    	System.out.println(DataManager.getDataManager().getMap().get(StatusCaso.CONFIRMADOS).containsKey(startDate.toLocalDate()));
+//
+//    	
+//    	System.out.println(DataManager.getDataManager().calculateRanking(RankType.MAIOR_NUMERO_CONFIRMADOS, startDate, endDate).toJSONString());
+//    	
     	
     	//fetchData();
     }

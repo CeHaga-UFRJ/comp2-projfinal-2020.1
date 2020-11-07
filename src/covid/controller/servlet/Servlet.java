@@ -20,6 +20,7 @@ import org.json.simple.JSONArray;
 
 import covid.controller.data.DataManager;
 import covid.controller.files.CacheManager;
+import covid.enums.ExportType;
 import covid.enums.RankType;
 import covid.enums.StatusCaso;
 import covid.launcher.ProgramLauncher;
@@ -39,6 +40,7 @@ public class Servlet extends HttpServlet {
 		String rankTypeString = request.getParameter("rankType");
 		String startDateString = request.getParameter("startDate");
 		String endDateString = request.getParameter("endDate");
+		String exportTypeString = request.getParameter("exportType");
 		response.setHeader("Access-Control-Allow-Origin", "*");	
 		if(rankTypeString == null || startDateString == null || endDateString == null) {
 			response.getWriter().println("[]");
@@ -54,12 +56,13 @@ public class Servlet extends HttpServlet {
 		LocalDateTime startDate = LocalDate.parse(startDateString).atStartOfDay();
 		LocalDateTime endDate = LocalDate.parse(endDateString).atStartOfDay();
 		RankType rankType = RankType.stringToRankType(rankTypeString);
+		ExportType exportType = ExportType.stringToExportType(exportTypeString);
 
 		HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> map = deserializeData();
 		if(dm.getMap() == null)
 			dm.setMap(map);
 		
-		JSONArray jsonArray = DataManager.getDataManager().calculateRanking(rankType, startDate, endDate);
+		JSONArray jsonArray = DataManager.getDataManager().calculateRanking(rankType, exportType, startDate, endDate);
 		response.getWriter().println(jsonArray.toJSONString());
 	}
     

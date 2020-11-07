@@ -3,15 +3,23 @@ package covid.controller.data;
 import covid.comparators.ParOrdenadoComparator;
 import covid.controller.files.CacheManager;
 import covid.controller.rank.TotalCasos;
+import covid.enums.RankType;
 import covid.enums.StatusCaso;
 import covid.models.Medicao;
 import covid.models.ParOrdenado;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 
 /**
  * @author Carlos Bravo - cehaga@dcc.ufrj.br
@@ -19,7 +27,7 @@ import java.util.List;
 public class DataManager {
     private static DataManager dataManager;
     
-    public static HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> map;
+    private HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> map;
     
     private DataManager(){
 
@@ -33,14 +41,15 @@ public class DataManager {
     public List<ParOrdenado<String, Float>> rankingCasesByPeriod(StatusCaso status, LocalDateTime dataInicio, LocalDateTime dataFim) {
     	List<ParOrdenado<String, Float>> listRanking = new ArrayList<>();
     	
-    	EstatisticaData estatistica = getMedicaoList(status, dataInicio, dataFim);
+    	//EstatisticaData estatistica = getMedicaoList(status, dataInicio, dataFim);
+    	HashMap<String, Medicao> mapInicial = map.get(status).get(dataInicio.toLocalDate());
+    	HashMap<String, Medicao> mapFinal = map.get(status).get(dataFim.toLocalDate());
     	
-    	for(Medicao medicoes : estatistica.mapFinalHashMap.values()) {
+    	for(Medicao medicoes : mapFinal.values()) {
     		TotalCasos totalCasos = new TotalCasos();
-    		totalCasos.inclui(estatistica.mapInicialHashMap.get(medicoes.getPais().getSlug()));
+    		totalCasos.inclui(mapInicial.get(medicoes.getPais().getSlug()));
     		totalCasos.inclui(medicoes);
-    		
-    		ParOrdenado<String, Float> par = new ParOrdenado<>(medicoes.getPais().getSlug(),totalCasos.valor());
+    		ParOrdenado<String, Float> par = new ParOrdenado<>(medicoes.getPais().getNome(),totalCasos.valor());
     		
     		listRanking.add(par);   		
     	} 
@@ -52,12 +61,57 @@ public class DataManager {
     	return listRanking;
     }
     
-  //remover depois, não tem mais sentido manter 
-    public DataManager.EstatisticaData getMedicaoList(StatusCaso status, LocalDateTime startDate, LocalDateTime endDate){
-		return new EstatisticaData(map.get(status).get(startDate), map.get(status).get(endDate));
+    public JSONArray toJson(List<ParOrdenado<String, Float>> listRanking) {
+        JSONArray list = new JSONArray();
+        for (ParOrdenado<String, Float> par : listRanking) {
+        	JSONObject obj = new JSONObject();
+        	String pais = par.getPais();
+        	Float casos = par.getCases();
+        	obj.put("Pais", pais);
+        	obj.put("Casos", casos);
+            list.add(obj);
+        }
+        return list;
     }
     
-    public class EstatisticaData {
+    public JSONArray calculateRanking(RankType type, LocalDateTime startDate, LocalDateTime endDate) {
+    	List<ParOrdenado<String, Float>> list = null;
+    	switch(type) {
+	    	case MAIOR_NUMERO_CONFIRMADOS:
+	    		list = rankingCasesByPeriod(StatusCaso.CONFIRMADOS, startDate, endDate);
+	    		break;
+    		default:
+    			list = null;
+    			break;
+    	}
+    	
+    	return toJson(list);
+    }
+       
+
+    public HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> getMap() {
+    	try {
+    		return (HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>>) map.clone();
+    	}
+    	catch (NullPointerException e) {
+			return null;
+		}
+	}
+
+	public void setMap(HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> map) {
+		try {
+			this.map = (HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>>) map.clone();
+    	}
+    	catch (NullPointerException e) {
+			
+		}
+	}
+	
+	  //remover depois, não tem mais sentido manter 
+    public DataManager.EstatisticaData getMedicaoList(StatusCaso status, LocalDateTime startDate, LocalDateTime endDate){
+		return new EstatisticaData(getMap().get(status).get(startDate), getMap().get(status).get(endDate));
+    }
+	public class EstatisticaData {
     	public HashMap<String, Medicao> mapInicialHashMap;
     	public HashMap<String, Medicao> mapFinalHashMap;
     	public EstatisticaData(HashMap<String, Medicao> mapInicialHashMap, HashMap<String, Medicao> mapFinalHashMap) {
@@ -65,6 +119,8 @@ public class DataManager {
     		this.mapFinalHashMap = mapFinalHashMap;
     	}
     }
+    
+    
     
 }
 

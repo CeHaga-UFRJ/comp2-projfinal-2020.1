@@ -48,7 +48,17 @@ public class CacheManager {
         }
     }
     
-    
+    public HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> deserializeData() {
+    	String fileName = "SERIALIZED_DATA.ser";
+	    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("WebContent/WEB-INF/DATA/" + fileName))){
+	    	return (HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>>) ois.readObject();
+	    } 
+	    catch (IOException | ClassNotFoundException e){
+	       	System.out.println("Exception when reading obj");
+	    	e.printStackTrace();
+	        return null;
+	    }
+	}
     
     
     

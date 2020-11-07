@@ -16,9 +16,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
+
 import covid.controller.data.DataManager;
 import covid.controller.files.CacheManager;
+import covid.enums.RankType;
 import covid.enums.StatusCaso;
+import covid.launcher.ProgramLauncher;
 import covid.models.Medicao;
 
 
@@ -32,18 +36,31 @@ public class Servlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String rankType = request.getParameter("rankType");
-		String startDate = request.getParameter("startDate");
-		String endDate = request.getParameter("endDate");
+		String rankTypeString = request.getParameter("rankType");
+		String startDateString = request.getParameter("startDate");
+		String endDateString = request.getParameter("endDate");
 		response.setHeader("Access-Control-Allow-Origin", "*");	
+		if(rankTypeString == null || startDateString == null || endDateString == null) {
+			response.getWriter().println("[]");
+			return;
+		}
 		
+		System.out.println(rankTypeString);
+		System.out.println(startDateString);
+		System.out.println(endDateString);
+		
+		DataManager dm = DataManager.getDataManager();
+		
+		LocalDateTime startDate = LocalDate.parse(startDateString).atStartOfDay();
+		LocalDateTime endDate = LocalDate.parse(endDateString).atStartOfDay();
+		RankType rankType = RankType.stringToRankType(rankTypeString);
+
 		HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> map = deserializeData();
-		System.out.println("WE DID IT BOIS??? " + map.containsKey(StatusCaso.MORTOS));
-		if(DataManager.map == null)
-			DataManager.map = map;
+		if(dm.getMap() == null)
+			dm.setMap(map);
 		
-		response.getWriter().println("Hello World");
-		response.getWriter().println("brasil");
+		JSONArray jsonArray = DataManager.getDataManager().calculateRanking(rankType, startDate, endDate);
+		response.getWriter().println(jsonArray.toJSONString());
 	}
     
 	

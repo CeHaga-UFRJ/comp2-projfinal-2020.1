@@ -16,11 +16,15 @@ public abstract class Estatistica {
     private LocalDate dataUltima;
 
     public boolean inclui(Medicao observacao) {
+    	if(observacoes == null) {
+    		observacoes = new ArrayList<>();
+    	}
         boolean adicionado = observacoes.add(observacao);
-        if(observacao.getMomento().isBefore(dataPrimeira)){
+        
+        if(dataPrimeira == null || observacao.getMomento().isBefore(dataPrimeira)){
             dataPrimeira = observacao.getMomento();
         }
-        if(observacao.getMomento().isAfter(dataUltima)){
+        if(dataUltima == null || observacao.getMomento().isAfter(dataUltima)){
             dataUltima = observacao.getMomento();
         }
         return adicionado;
@@ -42,7 +46,7 @@ public abstract class Estatistica {
 
     public List<Medicao> getObservacoes() {
         List<Medicao> list = new ArrayList<>(observacoes);
-        list.sort(new CasosMaisRecentesComparator());
+        list.sort(new CasosMaisRecentesComparator().reversed());
         return list;
     }
 }

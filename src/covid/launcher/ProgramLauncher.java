@@ -13,6 +13,7 @@ import covid.controller.api.APIReader;
 import covid.controller.data.DataManager;
 import covid.controller.data.DataManager.EstatisticaData;
 import covid.controller.files.CacheManager;
+import covid.enums.RankType;
 import covid.enums.StatusCaso;
 import covid.models.Medicao;
 import covid.models.Pais;
@@ -22,9 +23,18 @@ public class ProgramLauncher {
     	
     	
     	System.out.println("Hello World");
-    	//InitializeData();
+    	loadData();
+    	
+    	LocalDateTime startDate = LocalDateTime.of(2020, 3, 1, 0, 0);
+    	LocalDateTime endDate = LocalDateTime.of(2020, 11, 1, 0, 0);
+    	
+    	System.out.println(DataManager.getDataManager().getMap().get(StatusCaso.CONFIRMADOS).containsKey(startDate.toLocalDate()));
+
+    	
+    	System.out.println(DataManager.getDataManager().calculateRanking(RankType.MAIOR_NUMERO_CONFIRMADOS, startDate, endDate).toJSONString());
     	
     	
+    	//fetchData();
     }
     
     
@@ -45,7 +55,7 @@ public class ProgramLauncher {
     	return dateMap;
     }
     
-    public static void InitializeData() {
+    public static void fetchData() {
     	DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
     	Instant dataInicialInstant = Instant.from(formatter.parse("2001-01-01T00:00:00Z"));
         Instant dataFinalInstant = Instant.from(formatter.parse("3001-03-08T00:00:00Z"));
@@ -69,7 +79,17 @@ public class ProgramLauncher {
     	cm.serializeData(map);
     }
     
-    public static void Teste() {
+    public static void loadData() {
+    	CacheManager cm = new CacheManager();
+    	HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> map = cm.deserializeData();
+    	DataManager dm = DataManager.getDataManager();
+    	if(dm.getMap() == null)
+			dm.setMap(map);
+    }
+    
+    
+    
+    public static void teste() {
     	
     	System.out.println("Testando");
 		

@@ -2,6 +2,7 @@ package covid.controller.data;
 
 import covid.comparators.ParOrdenadoComparator;
 import covid.controller.files.CacheManager;
+import covid.controller.rank.CrescimentoCasos;
 import covid.controller.rank.TotalCasos;
 import covid.enums.RankType;
 import covid.enums.StatusCaso;
@@ -61,6 +62,28 @@ public class DataManager {
     	return listRanking;
     }
     
+    public List<ParOrdenado<String, Float>> rankingGrowthCasesByPeriod(StatusCaso status, LocalDateTime dataInicio, LocalDateTime dataFim) {
+        List<ParOrdenado<String, Float>> listRanking = new ArrayList<>();
+        
+        HashMap<String, Medicao> mapInicial = map.get(status).get(dataInicio.toLocalDate());
+        HashMap<String, Medicao> mapFinal = map.get(status).get(dataFim.toLocalDate());
+        
+        for(Medicao medicoes : mapFinal.values()) {
+            CrescimentoCasos crescimentoCasos = new CrescimentoCasos();
+            crescimentoCasos.inclui(mapInicial.get(medicoes.getPais().getSlug()));
+            crescimentoCasos.inclui(medicoes);
+            ParOrdenado<String, Float> par = new ParOrdenado<>(medicoes.getPais().getNome(),crescimentoCasos.valor());
+            
+            listRanking.add(par);           
+        } 
+        
+        ParOrdenadoComparator<String, Float> comparator = new ParOrdenadoComparator<>();
+        
+        listRanking.sort(comparator);
+        
+        return listRanking;
+    }
+    
     public JSONArray toJson(List<ParOrdenado<String, Float>> listRanking) {
         JSONArray list = new JSONArray();
         for (ParOrdenado<String, Float> par : listRanking) {
@@ -77,13 +100,30 @@ public class DataManager {
     public JSONArray calculateRanking(RankType type, LocalDateTime startDate, LocalDateTime endDate) {
     	List<ParOrdenado<String, Float>> list = null;
     	switch(type) {
-	    	case MAIOR_NUMERO_CONFIRMADOS:
-	    		list = rankingCasesByPeriod(StatusCaso.CONFIRMADOS, startDate, endDate);
-	    		break;
-    		default:
-    			list = null;
-    			break;
-    	}
+        case MAIOR_NUMERO_CONFIRMADOS:
+            list = rankingCasesByPeriod(StatusCaso.CONFIRMADOS, startDate, endDate);
+            break;
+        case MAIOR_NUMERO_MORTOS:
+            list = rankingCasesByPeriod(StatusCaso.MORTOS, startDate, endDate);
+            break;
+        case MAIOR_NUMERO_RECUPERADOS:
+            list = rankingCasesByPeriod(StatusCaso.RECUPERADOS, startDate, endDate);
+            break;
+        case MAIOR_CRESCIMENTO_CONFIRMADOS:
+            list = rankingGrowthCasesByPeriod(StatusCaso.CONFIRMADOS, startDate, endDate);
+            break;
+        case MAIOR_CRESCIMENTO_MORTOS:
+            list = rankingGrowthCasesByPeriod(StatusCaso.MORTOS, startDate, endDate);
+            break;
+        case MAIOR_CRESCIMENTO_RECUPERADOS:
+            list = rankingGrowthCasesByPeriod(StatusCaso.RECUPERADOS, startDate, endDate);
+            break;
+        case MAIOR_TAXA_MORTALIDADE:
+            break;
+        default:
+            list = null;
+            break;
+    }
     	
     	return toJson(list);
     }

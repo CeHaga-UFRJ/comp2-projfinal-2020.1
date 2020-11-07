@@ -13,37 +13,46 @@
     <div class="page">
         <div class="header">
             <div class="logo">
-                <img class="logoImg" src="mask.png" alt="" onclick="nextCountry()">
+                <img class="logoImg" src="mask.png" alt="" onclick="submitAndLoad()">
                 <h1>COVID-19</h1>
             </div>
         </div>
         <div class="main">
             <div class="sidebar">
                 <header>
-                    <form action="">
-                          <select id="rankType" name="rankType">
-                            <option onClick="hideDistancia()" value="maiorCaso">Maior número de casos</option>
-                            <option onClick="hideDistancia()" value="maiorRecuperado">Maior número de recuperados</option>
-                            <option onClick="hideDistancia()" value="maiorMorte">Maior número de mortos</option>
-                            <option onClick="hideDistancia()" value="crescCaso">Maior crescimento de casos</option>
-                            <option onClick="hideDistancia()" value="crescRecuperado">Maior crescimento de recuperados</option>
-                            <option onClick="hideDistancia()" value="crescMorte">Maior crescimento de mortos</option>
-                            <option onClick="hideDistancia()" value="mortalidade">Maior mortalidade</option>
-                            <option onClick="showDistancia()" value="maisProximo">Locais mais próximos do local com maior crescimento de casos</option>
-                          </select>
+                    <form action="" id="form">
+                        <select id="rankType" name="rankType" onchange="updateDistancia()">
+                            <option value="MAIOR_NUMERO_CONFIRMADOS">Maior número de casos</option>
+                            <option value="MAIOR_NUMERO_RECUPERADOS">Maior número de recuperados</option>
+                            <option value="MAIOR_NUMERO_MORTOS">Maior número de mortos</option>
+                            <option value="MAIOR_CRESCIMENTO_CONFIRMADOS">Maior crescimento de casos</option>
+                            <option value="MAIOR_CRESCIMENTO_RECUPERADOS">Maior crescimento de recuperados</option>
+                            <option value="MAIOR_CRESCIMENTO_MORTOS">Maior crescimento de mortos</option>
+                            <option value="MAIOR_TAXA_MORTALIDADE">Maior mortalidade</option>
+                            <option value="MAIOR_PROXIMIDADE_DO_EPICENTRO">Locais mais próximos do local com maior crescimento de casos</option>
+                        </select>
         
+                    
                         <br /><br />
-                          <label for="beginDate">De</label>
-                        <input type="date" id="beginDate" name="beginDate">
+                        <label for="startDate">De</label>
+                        <input type="date" id="startDate" name="startDate">
                         <label for="endDate">até</label>
                         <input type="date" id="endDate" name="endDate">
-        
-                        <label style="visibility: hidden;" id="labelDistancia" for="distancia">Distância</label>
-                        <input style="visibility: hidden;" type="number" id="distancia" name="distancia" min="1">
-        
                         <br /><br />
-                          <input type="submit" value="Submit">
+                        <label for="exportType">Exportar como</label>
+                        <select id="exportType" name="exportType">
+                                <option value="csv">.csv</option>
+                                <option value="tsv">.tsv</option>
+                                <option value="none">none</option>
+                        </select>
+        
+                        <label class="invisible" id="labelDistancia" for="distancia">Distância</label>
+                        <input class="invisible" type="number" id="distancia" name="distancia" min="1">
+                        <br /><br />
                     </form>
+                    <div class="submitButtonWrapper">
+                        <button class="submitButton" onclick="submitAndLoad()">Submit</button>
+                    </div>
                 </header>
 
 
@@ -56,6 +65,4 @@
         </div>
     </div>
     <script src="graph.js"></script>
-    <script src="dataRequest.js"></script>
-</body>
 </html>

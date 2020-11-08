@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import covid.controller.data.DataManager;
 import covid.enums.ExportType;
 import covid.enums.RankType;
 import covid.models.ParOrdenado;
@@ -42,10 +43,16 @@ public class RankingExport {
         	break;
         case CSV:
         	tipoArquivo = ".csv";
+        	break;
         case NONE:
         	tipoArquivo = "none";
+        	break;
 		default:
 			break;
+        }
+        
+        if(tipoArquivo.equals("none")) {
+        	return;
         }
         
         String fileName = "";
@@ -66,8 +73,8 @@ public class RankingExport {
             
             fileName = rankType.toString() + "_" + startDate + "_to_" + endDate + tipoArquivo;
         }
-        
-        File file = new File("./src/ExportedRankingFiles/" + fileName);
+        String projectPath = DataManager.getDataManager().getProjectPath();
+        File file = new File(projectPath + "/WebContent/WEB-INF/DATA/" + fileName);
 
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))){
             bw.write(sb.toString());

@@ -18,7 +18,7 @@ public enum ExportType {
 			case("NONE"):
 				return NONE;
 			default:
-				return null;
+				return NONE;
 		}
 	}
 }

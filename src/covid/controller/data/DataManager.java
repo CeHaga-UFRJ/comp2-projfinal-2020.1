@@ -37,6 +37,8 @@ public class DataManager {
     
     private HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> map;
     
+    public String projectPath;
+    
     private DataManager(){
 
     }
@@ -104,7 +106,7 @@ public class DataManager {
         return list;
     }
     
-    public JSONArray calculateRanking(RankType rankType, ExportType exportType, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<ParOrdenado<String, Float>> calculateRanking(RankType rankType, ExportType exportType, LocalDateTime startDate, LocalDateTime endDate) {
     	List<ParOrdenado<String, Float>> list = null;
     	switch(rankType) {
         case MAIOR_NUMERO_CONFIRMADOS:
@@ -131,13 +133,13 @@ public class DataManager {
             list = null;
             break;
     }
-    	DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-    	String strDataInicial = startDate.format(formatter);
-    	String strDataFinal = endDate.format(formatter);
+
+    	String strDataInicial = startDate.toLocalDate().toString();
+    	String strDataFinal = endDate.toLocalDate().toString();
     	
         RankingExport.export(list, exportType, rankType, strDataInicial, strDataFinal);
     	
-    	return toJson(list);
+    	return list;
     }
        
 
@@ -157,6 +159,13 @@ public class DataManager {
     	catch (NullPointerException e) {
 			
 		}
+	}
+	public String getProjectPath() {
+		return projectPath;
+	}
+	
+	public void setProjectPath(String path) {
+		this.projectPath = path;
 	}
 	
 	  //remover depois, não tem mais sentido manter 

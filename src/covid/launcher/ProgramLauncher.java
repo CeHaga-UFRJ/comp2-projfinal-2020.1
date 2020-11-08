@@ -1,5 +1,9 @@
 package covid.launcher;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,7 +27,9 @@ public class ProgramLauncher {
     	
     	
     	System.out.println("Hello World");
+    	//fetchData();
     	loadData();
+    	initializeServer();
     	
 //    	LocalDateTime startDate = LocalDateTime.of(2020, 3, 1, 0, 0);
 //    	LocalDateTime endDate = LocalDateTime.of(2020, 11, 1, 0, 0);
@@ -85,6 +91,22 @@ public class ProgramLauncher {
     	DataManager dm = DataManager.getDataManager();
     	if(dm.getMap() == null)
 			dm.setMap(map);
+    }
+    
+    public static void initializeServer() {
+    	String projectPath = new File("").getAbsolutePath();
+    	System.out.println(projectPath);
+    	
+    	File file = new File(projectPath + "/WebContent/WEB-INF/DATA/PROJECT_PATH.txt");
+
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))){
+            bw.write(projectPath);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            System.out.println("Nao foi possivel gerar o arquivo.");
+        }
+    	
     }
     
     

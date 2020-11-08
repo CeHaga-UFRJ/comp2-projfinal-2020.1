@@ -66,7 +66,7 @@ public class APIReader {
 
         for(String paisName: listaDePaises){
         	
-        	if(paisName.charAt(0) != 'a') { 
+        	if(paisName.equals("united-states")) { 
         		System.out.println("Skippando.");
         		continue;
         	}

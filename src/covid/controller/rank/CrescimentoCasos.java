@@ -14,9 +14,9 @@ public class CrescimentoCasos extends Estatistica{
         Medicao ult = list.get(list.size()-1);
         Medicao prim = list.get(0);
         
-        float ultCasos = ult.getCasos();
-        float primCasos = prim.getCasos();
-        if(primCasos == 0) return 0f;
-        return (ultCasos - primCasos) / primCasos;
+        int ultCasos = ult.getCasos();
+        int primCasos = prim.getCasos();
+        if(primCasos == 0) primCasos = 1;
+        return (ultCasos - primCasos) / (float)primCasos;
     }
 }

@@ -4,6 +4,13 @@ import java.util.Comparator;
 
 import covid.models.ParOrdenado;
 
+/**
+ * Compare de objetos do tipo ParOrdenado<T,E>
+ * @author Matheus Oliveira Silva - matheusflups8@gmail.com
+ *
+ * @param <T>
+ * @param <E>
+ */
 public class ParOrdenadoComparator<T , E extends Number> implements Comparator<ParOrdenado<T,E>> {
 
 	@Override

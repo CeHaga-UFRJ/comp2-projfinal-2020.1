@@ -66,7 +66,7 @@ public class APIReader {
 
         for(String paisName: listaDePaises){
         	
-        	if(paisName.charAt(0) != 'a') { 
+        	if(paisName.equals("united-states")) { 
         		System.out.println("Skippando.");
         		continue;
         	}
@@ -167,14 +167,14 @@ public class APIReader {
                 for (Object pais : respostaJson) listaDePaises.add((String)((JSONObject) pais).get("Slug").toString()); 
                 
             }catch (ParseException e) {
-                System.err.println("Resposta inválida");
+                System.err.println("Resposta invalida");
                 e.printStackTrace();
             }
         }catch (IOException e) {
-            System.err.println("Problema com a conexão");
+            System.err.println("Problema com a conexao");
             e.printStackTrace();
         }catch (InterruptedException e) {
-            System.err.println("Requisição interrompida");
+            System.err.println("Requisicao interrompida");
             e.printStackTrace();
         }
 

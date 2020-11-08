@@ -13,6 +13,10 @@ public class CrescimentoCasos extends Estatistica{
         List<Medicao> list = getObservacoes();
         Medicao ult = list.get(list.size()-1);
         Medicao prim = list.get(0);
-        return (ult.getCasos() - prim.getCasos()) / prim.getCasos();
+        
+        int ultCasos = ult.getCasos();
+        int primCasos = prim.getCasos();
+        if(primCasos == 0) primCasos = 1;
+        return (ultCasos - primCasos) / (float)primCasos;
     }
 }

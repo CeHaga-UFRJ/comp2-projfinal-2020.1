@@ -2,7 +2,10 @@ package covid.controller.data;
 
 import covid.comparators.ParOrdenadoComparator;
 import covid.controller.files.CacheManager;
+import covid.controller.files.RankingExport;
+import covid.controller.rank.CrescimentoCasos;
 import covid.controller.rank.TotalCasos;
+import covid.enums.ExportType;
 import covid.enums.RankType;
 import covid.enums.StatusCaso;
 import covid.models.Medicao;
@@ -13,6 +16,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,11 +27,17 @@ import org.json.simple.JSONObject;
 
 /**
  * @author Carlos Bravo - cehaga@dcc.ufrj.br
+ * @author Matheus Oliveira Silva - matheusflups8@gmail.com
+ * 
  */
+
+
 public class DataManager {
     private static DataManager dataManager;
     
     private HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> map;
+    
+    public String projectPath;
     
     private DataManager(){
 
@@ -61,6 +71,28 @@ public class DataManager {
     	return listRanking;
     }
     
+    public List<ParOrdenado<String, Float>> rankingGrowthCasesByPeriod(StatusCaso status, LocalDateTime dataInicio, LocalDateTime dataFim) {
+        List<ParOrdenado<String, Float>> listRanking = new ArrayList<>();
+        
+        HashMap<String, Medicao> mapInicial = map.get(status).get(dataInicio.toLocalDate());
+        HashMap<String, Medicao> mapFinal = map.get(status).get(dataFim.toLocalDate());
+        
+        for(Medicao medicoes : mapFinal.values()) {
+            CrescimentoCasos crescimentoCasos = new CrescimentoCasos();
+            crescimentoCasos.inclui(mapInicial.get(medicoes.getPais().getSlug()));
+            crescimentoCasos.inclui(medicoes);
+            ParOrdenado<String, Float> par = new ParOrdenado<>(medicoes.getPais().getNome(),crescimentoCasos.valor());
+            
+            listRanking.add(par);           
+        } 
+        
+        ParOrdenadoComparator<String, Float> comparator = new ParOrdenadoComparator<>();
+        
+        listRanking.sort(comparator);
+        
+        return listRanking;
+    }
+    
     public JSONArray toJson(List<ParOrdenado<String, Float>> listRanking) {
         JSONArray list = new JSONArray();
         for (ParOrdenado<String, Float> par : listRanking) {
@@ -74,18 +106,40 @@ public class DataManager {
         return list;
     }
     
-    public JSONArray calculateRanking(RankType type, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<ParOrdenado<String, Float>> calculateRanking(RankType rankType, ExportType exportType, LocalDateTime startDate, LocalDateTime endDate) {
     	List<ParOrdenado<String, Float>> list = null;
-    	switch(type) {
-	    	case MAIOR_NUMERO_CONFIRMADOS:
-	    		list = rankingCasesByPeriod(StatusCaso.CONFIRMADOS, startDate, endDate);
-	    		break;
-    		default:
-    			list = null;
-    			break;
-    	}
+    	switch(rankType) {
+        case MAIOR_NUMERO_CONFIRMADOS:
+            list = rankingCasesByPeriod(StatusCaso.CONFIRMADOS, startDate, endDate);
+            break;
+        case MAIOR_NUMERO_MORTOS:
+            list = rankingCasesByPeriod(StatusCaso.MORTOS, startDate, endDate);
+            break;
+        case MAIOR_NUMERO_RECUPERADOS:
+            list = rankingCasesByPeriod(StatusCaso.RECUPERADOS, startDate, endDate);
+            break;
+        case MAIOR_CRESCIMENTO_CONFIRMADOS:
+            list = rankingGrowthCasesByPeriod(StatusCaso.CONFIRMADOS, startDate, endDate);
+            break;
+        case MAIOR_CRESCIMENTO_MORTOS:
+            list = rankingGrowthCasesByPeriod(StatusCaso.MORTOS, startDate, endDate);
+            break;
+        case MAIOR_CRESCIMENTO_RECUPERADOS:
+            list = rankingGrowthCasesByPeriod(StatusCaso.RECUPERADOS, startDate, endDate);
+            break;
+        case MAIOR_TAXA_MORTALIDADE:
+            break;
+        default:
+            list = null;
+            break;
+    }
+
+    	String strDataInicial = startDate.toLocalDate().toString();
+    	String strDataFinal = endDate.toLocalDate().toString();
     	
-    	return toJson(list);
+        RankingExport.export(list, exportType, rankType, strDataInicial, strDataFinal);
+    	
+    	return list;
     }
        
 
@@ -106,6 +160,13 @@ public class DataManager {
 			
 		}
 	}
+	public String getProjectPath() {
+		return projectPath;
+	}
+	
+	public void setProjectPath(String path) {
+		this.projectPath = path;
+	}
 	
 	  //remover depois, não tem mais sentido manter 
     public DataManager.EstatisticaData getMedicaoList(StatusCaso status, LocalDateTime startDate, LocalDateTime endDate){
@@ -118,9 +179,6 @@ public class DataManager {
     		this.mapInicialHashMap = mapInicialHashMap;
     		this.mapFinalHashMap = mapFinalHashMap;
     	}
-    }
-    
-    
-    
+    }    
 }
 

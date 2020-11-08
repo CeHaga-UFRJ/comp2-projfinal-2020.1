@@ -3,18 +3,28 @@ var myChart;
 var canvasWrapper = document.getElementById('canvasWrapper');
 
 //requestChartData();
-createExampleChart();
 
+document.getElementById("form").onsubmit = submitAndLoad;
 
-//
+function submitAndLoad(){
+    console.log("submitted");
+    var rankType = document.getElementById("rankType").value;
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    var exportType = document.getElementById("exportType").value;
 
-function createExampleChart(){
-    fetch("./example.json")
+    createExampleChart(rankType, startDate, endDate, exportType);
+}
+
+function createExampleChart(rankType, startDate, endDate, exportType){
+    var path = "http://localhost:8080/projFinal/Servlet?rankType=" + rankType + "&startDate=" + startDate + "&endDate=" + endDate + "&exportType=" + exportType;
+    fetch(path)
     .then(data => data.json())
     .then(json => createBarChartFromJson(json));
 }
 
 function createBarChartFromJson(json){
+    if(myChart != null) myChart.destroy();
     var countryNames = [];
     var countryValues = [];
     json.forEach(element => {
@@ -25,6 +35,7 @@ function createBarChartFromJson(json){
     var dataset = createBarDataSet(countryValues);
     myChart.data.datasets.push(dataset);
 
+    myChart.update();
 }
 
 function newBarChart(xLabels){
@@ -84,3 +95,14 @@ function requestChartData(countrySlug, dataType, startDate, endDate){
     request.send();
 }
 
+
+function updateDistancia(){
+    if(document.getElementById("rankType").value == "MAIOR_PROXIMIDADE_DO_EPICENTRO"){
+        document.getElementById("distancia").classList.remove("invisible");
+        document.getElementById("labelDistancia").classList.remove("invisible");
+    }
+    else {
+        document.getElementById("distancia").classList.add("invisible");
+        document.getElementById("labelDistancia").classList.add("invisible");
+    }
+}

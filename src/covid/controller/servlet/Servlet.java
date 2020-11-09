@@ -32,19 +32,23 @@ public class Servlet extends HttpServlet {
 		String startDateString = request.getParameter("startDate");
 		String endDateString = request.getParameter("endDate");
 		String exportTypeString = request.getParameter("exportType");
+		String distanceString = request.getParameter("distance");
 		
+		if(distanceString.isBlank()) distanceString = "";
 		if(exportTypeString == null) exportTypeString = "none";
 		if(rankTypeString == null || startDateString == null || endDateString == null) {
 			response.getWriter().println("[]");
 			return;
 		}
-
+		
+		if(distanceString.isBlank()) distanceString = "1";
+		float distance = Float.parseFloat(distanceString);
 		LocalDateTime startDate = LocalDate.parse(startDateString).atStartOfDay();
 		LocalDateTime endDate = LocalDate.parse(endDateString).atStartOfDay();
 		RankType rankType = RankType.stringToRankType(rankTypeString);
 		ExportType exportType = ExportType.stringToExportType(exportTypeString);
 
-		List<ParOrdenado<String, Float>> rankingList = DataManager.getDataManager().calculateRanking(rankType, exportType, startDate, endDate);
+		List<ParOrdenado<String, Float>> rankingList = DataManager.getDataManager().calculateRanking(rankType, exportType, startDate, endDate, distance);
 		JSONArray jsonArray = DataManager.getDataManager().toJson(rankingList);
 		response.getWriter().println(jsonArray.toJSONString());
 	}

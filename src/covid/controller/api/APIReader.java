@@ -14,6 +14,7 @@ import org.json.simple.parser.*;
 
 import covid.models.Medicao;
 import covid.models.Pais;
+import covid.controller.data.DataManager;
 import covid.enums.StatusCaso;
 
 import java.util.ArrayList;
@@ -107,17 +108,22 @@ public class APIReader {
                     	continue;
                     }
                     
-                                        
+                    JSONObject firstElement = ((JSONObject)respostaJson.get(0));
+                    
+                    paisNome = firstElement.get("Country").toString();
+                    paisSlug = firstElement.get("Country").toString().toLowerCase();
+                    paisCodigo = firstElement.get("CountryCode").toString();
+                    paisLatitude = Float.parseFloat(firstElement.get("Lat").toString());
+                    paisLongitude = Float.parseFloat(firstElement.get("Lon").toString());
+                    Pais pais = new Pais(paisNome, paisCodigo, paisSlug, paisLatitude, paisLongitude);
+                    DataManager.getDataManager().getMapCountries().put(paisSlug, pais);                    
+                    
+                    
                     // for each que percorre todas datas do periodo em questao 
                     for (Object x : respostaJson) {
                         // pega todas informacoes acerca do pais em questao
-                        paisNome = ((JSONObject) x).get("Country").toString();
-                        paisSlug = ((JSONObject) x).get("Country").toString().toLowerCase();
-                        paisCodigo = ((JSONObject) x).get("CountryCode").toString();
-                        paisLatitude = Float.parseFloat(((JSONObject) x).get("Lat").toString());
-                        paisLongitude = Float.parseFloat(((JSONObject) x).get("Lon").toString());
-
-                        Pais pais = new Pais(paisNome, paisCodigo, paisSlug, paisLatitude, paisLongitude);
+                        
+                        
 
                         Instant dataMomentoInstant = Instant.from(formatter.parse(((JSONObject) x).get("Date").toString()));
                         dataMomento = LocalDateTime.ofInstant(dataMomentoInstant, ZoneOffset.UTC);

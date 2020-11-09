@@ -1,0 +1,189 @@
+pais,quantidade_casos
+Croatia,2178.1072
+Serbia,5378.6357
+San Marino,6761.6064
+Bosnia and Herzegovina,7132.0454
+Monaco,10679.493
+Romania,19603.084
+Slovenia,26682.09
+Bulgaria,46951.992
+Montenegro,47920.07
+Republic of Kosovo,53420.984
+Andorra,56020.13
+Switzerland,56547.285
+Mongolia,58681.008
+Georgia,68771.53
+Hungary,75942.984
+Liechtenstein,76556.56
+Moldova,92025.805
+Holy See (Vatican City State),95427.53
+Italy,97498.41
+Austria,99591.25
+Macedonia, Republic of,116375.38
+Uzbekistan,134465.89
+Kazakhstan,137745.5
+Kyrgyzstan,149535.0
+Albania,153862.78
+Ukraine,169039.45
+Slovakia,196575.69
+Spain,219892.1
+Azerbaijan,254505.02
+Armenia,262413.66
+Czech Republic,326220.0
+Luxembourg,326220.0
+Portugal,344232.7
+Greece,388606.7
+Turkey,403995.66
+Belgium,418244.66
+Tajikistan,418244.66
+Germany,520084.1
+Poland,647234.0
+Japan,887924.7
+United Kingdom,900534.4
+Ireland,941050.44
+Malta,943208.06
+Korea (South),949694.0
+Belarus,1006838.56
+Cyprus,1126136.8
+Syrian Arab Republic (Syria),1205309.1
+Lithuania,1358736.6
+Afghanistan,1424272.8
+Tunisia,1437564.8
+Lebanon,1448243.2
+Iraq,1621637.0
+Latvia,1837825.1
+Iran, Islamic Republic of,1852919.9
+Palestinian Territory,2000973.0
+Morocco,2051588.5
+Israel,2293909.2
+Estonia,2392560.0
+Jordan,2451356.5
+Pakistan,2524972.2
+Kuwait,2916972.0
+Sweden,2947416.2
+China,2966524.0
+Norway,3078568.2
+Nepal,3276624.5
+Algeria,3423047.5
+Russian Federation,3501617.0
+Bhutan,3640198.5
+Finland,3669939.2
+Egypt,3938650.2
+Libya,4153202.8
+Bahrain,4340972.0
+Qatar,4613687.5
+Bahamas,4767707.0
+Iceland,5078323.0
+Western Sahara,5168872.0
+Saudi Arabia,5336954.5
+Taiwan, Republic of China,5434948.5
+Bangladesh,5445315.5
+Mexico,5471277.0
+United Arab Emirates,5580987.0
+Macao, SAR China,6239892.0
+Myanmar,6401924.5
+Cuba,6623104.0
+Oman,6628824.5
+Mauritania,6918007.0
+India,7165691.0
+Lao PDR,7606555.0
+Haiti,8161851.0
+Dominican Republic,8308534.5
+Jamaica,8717010.0
+Netherlands,8763002.0
+France,8855348.0
+Denmark,9021454.0
+Niger,9048174.0
+Mali,9074935.0
+Saint Kitts and Nevis,9216072.0
+Belize,9331124.0
+Antigua and Barbuda,9419587.0
+Cape Verde,1.015647E7
+Thailand,1.0248753E7
+Guatemala,1.0312886E7
+Yemen,1.0477688E7
+Chad,1.0549748E7
+Dominica,1.0578642E7
+Honduras,1.0730981E7
+Eritrea,1.0745546E7
+Senegal,1.1246644E7
+Viet Nam,1.1576967E7
+Saint Lucia,1.1690672E7
+El Salvador,1.1782034E7
+Gambia,1.2050541E7
+Barbados,1.2244184E7
+Saint Vincent and Grenadines,1.2408035E7
+Philippines,1.2486441E7
+Nicaragua,1.2494297E7
+Sudan,1.2502153E7
+Cambodia,1.2731075E7
+Grenada,1.297808E7
+Burkina Faso,1.2994101E7
+Djibouti,1.332463E7
+Guinea-Bissau,1.3348981E7
+Trinidad and Tobago,1.4265495E7
+Guinea,1.4893406E7
+Costa Rica,1.5065434E7
+Benin,1.544737E7
+Ethiopia,1.5587442E7
+Nigeria,1.5648922E7
+Togo,1.6055948E7
+Panama,1.6127266E7
+Sierra Leone,1.6198746E7
+Ghana,1.6658132E7
+Sri Lanka,1.6730778E7
+South Sudan,1.6739868E7
+Côte d'Ivoire,1.7032102E7
+Cameroon,1.7188382E7
+Marshall Islands,1.7410222E7
+Central African Republic,1.7895762E7
+Liberia,1.806539E7
+Venezuela (Bolivarian Republic),1.807484E7
+Somalia,1.9294702E7
+Guyana,1.957884E7
+Colombia,1.9865056E7
+Brunei Darussalam,1.9894782E7
+Malaysia,2.0223248E7
+Suriname,2.0514118E7
+Maldives,2.1245256E7
+Equatorial Guinea,2.286268E7
+Uganda,2.316119E7
+Singapore,2.3182586E7
+Sao Tome and Principe,2.4440456E7
+Kenya,2.4671726E7
+Congo (Brazzaville),2.4904084E7
+Indonesia,2.5529034E7
+Gabon,2.5540264E7
+Ecuador,2.6710202E7
+Rwanda,2.6836692E7
+Burundi,2.8508294E7
+Congo (Kinshasa),2.9308868E7
+Seychelles,3.0083944E7
+Papua New Guinea,3.2103658E7
+Tanzania, United Republic of,3.2179252E7
+Timor-Leste,3.5408164E7
+Peru,3.5832608E7
+Solomon Islands,3.6447176E7
+Angola,3.8556472E7
+Comoros,3.9500564E7
+Zambia,4.1265816E7
+Malawi,4.1437308E7
+Brazil,4.28657E7
+Bolivia,4.5900444E7
+Fiji,4.6338128E7
+Mozambique,4.9553884E7
+Madagascar,4.9710452E7
+Zimbabwe,5.0102956E7
+Mauritius,5.2217004E7
+Réunion,5.3460904E7
+Botswana,5.5445172E7
+Namibia,5.6492612E7
+Paraguay,5.7297252E7
+Swaziland,6.2595688E7
+Australia,6.5260928E7
+Lesotho,6.814676E7
+South Africa,6.9900776E7
+Uruguay,7.359004E7
+Chile,7.9737816E7
+Argentina,8.526808E7
+New Zealand,9.043344E7

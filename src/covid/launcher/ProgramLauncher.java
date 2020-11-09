@@ -83,14 +83,18 @@ public class ProgramLauncher {
     	CacheManager cm = new CacheManager();
     	System.out.println("Serializing Data");
     	cm.serializeData(map);
+    	cm.serializeCountries(DataManager.getDataManager().getMapCountries());
+    	
     }
     
     public static void loadData() {
     	CacheManager cm = new CacheManager();
     	HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> map = cm.deserializeData();
+    	HashMap<String, Pais> mapCountries = cm.deserializeCountries(); 
     	DataManager dm = DataManager.getDataManager();
-    	if(dm.getMap() == null)
-			dm.setMap(map);
+    	if(dm.getDataMap() == null)
+			dm.setDataMap(map);
+    	dm.setMapCountries(mapCountries);
     }
     
     public static void initializeServer() {

@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebListener;
 import covid.controller.data.DataManager;
 import covid.enums.StatusCaso;
 import covid.models.Medicao;
+import covid.models.Pais;
 
 @WebListener
 public class ServletStartupListener implements javax.servlet.ServletContextListener{
@@ -20,7 +21,8 @@ public class ServletStartupListener implements javax.servlet.ServletContextListe
 	@Override
 	public void contextInitialized(ServletContextEvent context) {
 		deserializeProjectPath(context);
-		DataManager.getDataManager().setMap(deserializeData(context));
+		DataManager.getDataManager().setDataMap(deserializeData(context));
+		DataManager.getDataManager().setMapCountries(deserializeCountryData(context));
 	}
 	
 	public String deserializeProjectPath(ServletContextEvent context) {
@@ -42,6 +44,18 @@ public class ServletStartupListener implements javax.servlet.ServletContextListe
 		InputStream inputStream = context.getServletContext().getResourceAsStream("/WEB-INF/DATA/SERIALIZED_DATA.ser");
 	    try (ObjectInputStream ois = new ObjectInputStream(inputStream)){
 	    	return (HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>>) ois.readObject();
+	    } 
+	    catch (IOException | ClassNotFoundException e){
+	       	System.out.println("Exception when reading obj");
+	    	e.printStackTrace();
+	        return null;
+	    }
+	}
+	
+	public HashMap<String, Pais> deserializeCountryData(ServletContextEvent context) {
+		InputStream inputStream = context.getServletContext().getResourceAsStream("/WEB-INF/DATA/SERIALIZED_COUNTRIES.ser");
+	    try (ObjectInputStream ois = new ObjectInputStream(inputStream)){
+	    	return (HashMap<String, Pais>) ois.readObject();
 	    } 
 	    catch (IOException | ClassNotFoundException e){
 	       	System.out.println("Exception when reading obj");

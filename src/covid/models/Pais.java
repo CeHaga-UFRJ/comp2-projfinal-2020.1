@@ -12,14 +12,14 @@ public class Pais implements Serializable {
     private String codigo;
     private String slug;
     private float latitude;
-    private float longitute;
+    private float longitude;
 
-    public Pais(String nome, String codigo, String slug, float latitude, float longitute) {
+    public Pais(String nome, String codigo, String slug, float latitude, float longitude) {
         this.nome = nome;
         this.codigo = codigo;
         this.slug = slug;
         this.latitude = latitude;
-        this.longitute = longitute;
+        this.longitude = longitude;
     }
 
     public String getNome() {
@@ -38,7 +38,7 @@ public class Pais implements Serializable {
         return latitude;
     }
 
-    public float getLongitute() {
-        return longitute;
+    public float getLongitude() {
+        return longitude;
     }
 }

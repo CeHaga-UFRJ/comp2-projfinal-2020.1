@@ -65,6 +65,7 @@ public class DataManager {
     		TotalCasos totalCasos = new TotalCasos();
     		totalCasos.inclui(mapInicial.get(medicoes.getPais().getSlug()));
     		totalCasos.inclui(medicoes);
+    		
     		ParOrdenado<String, Float> par = new ParOrdenado<>(medicoes.getPais().getNome(),totalCasos.valor());
     		
     		listRanking.add(par);   		

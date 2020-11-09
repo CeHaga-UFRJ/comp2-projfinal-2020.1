@@ -66,11 +66,6 @@ public class APIReader {
         Float paisLongitude = (float) 0;
 
         for(String paisName: listaDePaises){
-        	
-        	if(paisName.equals("united-states")) { 
-        		System.out.println("Skippando.");
-        		continue;
-        	}
 
             // String personalizada que varia de acordo com qual pais se trata, qual eh a data final e inicial do periodo em questao
             // e que tipo de informacao queremos, casos confirmados, casos de pessoas recuperadas e casos de pessoas que morreram.

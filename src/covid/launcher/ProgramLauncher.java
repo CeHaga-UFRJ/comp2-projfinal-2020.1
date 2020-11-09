@@ -16,7 +16,6 @@ import java.util.List;
 import covid.controller.api.APIReader;
 import covid.controller.api.MedicaoLists;
 import covid.controller.data.DataManager;
-import covid.controller.data.DataManager.EstatisticaData;
 import covid.controller.files.CacheManager;
 import covid.enums.RankType;
 import covid.enums.StatusCaso;
@@ -27,8 +26,9 @@ import covid.util.Tools;
 public class ProgramLauncher {
     public static void main(String[] args) {
     	initializeServer();
-    	menuInicial();
-    	
+    	loadData();
+    	//menuInicial();
+    	System.out.println("asd");
     }
     
     private static void menuInicial(){

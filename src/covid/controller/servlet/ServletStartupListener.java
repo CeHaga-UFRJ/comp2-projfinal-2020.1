@@ -41,6 +41,7 @@ public class ServletStartupListener implements javax.servlet.ServletContextListe
 	}
 	
 	public HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> deserializeData(ServletContextEvent context) {
+
 		InputStream inputStream = context.getServletContext().getResourceAsStream("/WEB-INF/DATA/SERIALIZED_DATA.ser");
 	    try (ObjectInputStream ois = new ObjectInputStream(inputStream)){
 	    	return (HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>>) ois.readObject();

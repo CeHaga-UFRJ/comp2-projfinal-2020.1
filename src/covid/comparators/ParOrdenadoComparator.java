@@ -5,8 +5,8 @@ import java.util.Comparator;
 import covid.models.ParOrdenado;
 
 /**
- * Compare de objetos do tipo ParOrdenado<T,E>
- * @author Matheus Oliveira Silva - matheusflups8@gmail.com
+ * Comparador de objetos do tipo ParOrdenado<T,E>
+ * @author Matheus Oliveira Silva, Markson de Viana Arguello
  *
  * @param <T>
  * @param <E>

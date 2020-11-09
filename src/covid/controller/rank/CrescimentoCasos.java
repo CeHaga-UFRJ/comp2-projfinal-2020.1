@@ -5,6 +5,7 @@ import covid.models.Medicao;
 import java.util.List;
 
 /**
+ * Classe que representa a estatística para o crescimento de casos.
  * @author Carlos Bravo - cehaga@dcc.ufrj.br
  */
 public class CrescimentoCasos extends Estatistica{

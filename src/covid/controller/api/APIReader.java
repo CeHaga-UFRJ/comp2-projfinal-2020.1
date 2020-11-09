@@ -156,6 +156,10 @@ public class APIReader {
         return medicaoLists;
     }
   
+    /**
+     * Pega o nome dos países presentes na API
+     * @return lista com nome dos países
+     */
     
     public static ArrayList<String> listaPaises(){
         String APIurl = "https://api.covid19api.com/countries";

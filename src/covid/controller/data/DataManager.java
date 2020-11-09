@@ -29,11 +29,11 @@ import org.json.simple.JSONObject;
 
 
 /**
- * @author Carlos Bravo - cehaga@dcc.ufrj.br
- * @author Matheus Oliveira Silva - matheusflups8@gmail.com
+ * Classe para gestão de dados
+ * 
+ * @author Carlos Bravo, Matheus Oliveira Silva, Markson Arguello
  * 
  */
-
 
 public class DataManager {
     private static DataManager dataManager;
@@ -48,11 +48,27 @@ public class DataManager {
     	mapData = new HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>>();
     	setMapCountries(new HashMap<String, Pais>());
     }
-    
+    /**
+     * Método usado para o singleton
+     * @return Única instância da classe DataManager
+     */
     public static DataManager getDataManager() {
         if(dataManager == null) dataManager = new DataManager();
         return dataManager;
     }
+    
+    /**
+     * Faz o ranking de casos por períodos
+     * 
+     *<p>
+     *Esse método é usado para todos os rankings que usam casos por período como: Total Casos, Total Mortos, Total Recuperados.
+     *</p>
+     *
+     * @param status Tipo de ranking foi requisitado
+     * @param dataInicio data de início solicitada
+     * @param dataFim data final solicitada
+     * @return lista de par ordenado com nome do país e número de casos
+     */
 
     private List<ParOrdenado<String, Float>> rankingCasesByPeriod(StatusCaso status, LocalDateTime dataInicio, LocalDateTime dataFim) {
     	List<ParOrdenado<String, Float>> listRanking = new ArrayList<>();
@@ -78,6 +94,20 @@ public class DataManager {
     	return listRanking;
     }
     
+    /**
+     * Faz o ranking de casos por períodos
+     * 
+     *<p>
+     *Esse método é usado para todos os rankings que usam crescimento de casos por período como: 
+     *Crescimento Casos, Crescimento Mortos, Crescimento Recuperados.
+     *</p>
+     *
+     * @param status Tipo de ranking foi requisitado
+     * @param dataInicio data de início solicitada
+     * @param dataFim data final solicitada
+     * @return lista de par ordenado com nome do país e número de casos
+     */
+    
     private List<ParOrdenado<String, Float>> rankingGrowthCasesByPeriod(StatusCaso status, LocalDateTime dataInicio, LocalDateTime dataFim) {
         List<ParOrdenado<String, Float>> listRanking = new ArrayList<>();
         
@@ -99,6 +129,20 @@ public class DataManager {
         
         return listRanking;
     }
+    
+    /**
+     * Faz o ranking de casos por períodos
+     * 
+     *<p>
+     *Esse método é usado para o mesmo propósito do rankingGrowthCasesByPeriod porém no retorno da função ao invés do 
+     *nome do país e usado o slug.
+     *</p>
+     *
+     * @param status Tipo de ranking foi requisitado
+     * @param dataInicio data de início solicitada
+     * @param dataFim data final solicitada
+     * @return lista de par ordenado com nome do país e número de casos
+     */
     
     private List<ParOrdenado<String, Float>> rankingGrowthCasesByPeriodSlug(StatusCaso status, LocalDateTime dataInicio, LocalDateTime dataFim) {
         List<ParOrdenado<String, Float>> listRanking = new ArrayList<>();
@@ -122,6 +166,12 @@ public class DataManager {
         return listRanking;
     }
     
+    /**
+     * Transforma uma lista de par ordenado em JSON
+     * @param listRanking ranking 
+     * @return ranking em JSON
+     */
+    
     public JSONArray toJson(List<ParOrdenado<String, Float>> listRanking) {
         JSONArray list = new JSONArray();
         for (ParOrdenado<String, Float> par : listRanking) {
@@ -134,6 +184,16 @@ public class DataManager {
         }
         return list;
     }
+    
+    /**
+     * Método que escolhe qual método será chamado de acordo com o que foi pedido pelo usuário
+     * @param rankType Tipo de ranking
+     * @param exportType Tipo de arquivo que será exportado o rnaking
+     * @param startDate Data inicial solicitada
+     * @param endDate Data final solicitada
+     * @param distance tamanho do raio do círculo caso o usuário queira as cidades mais perto da cidade com maior crescimento de casos
+     * @return Lista de par ordenado que contém o ranking.
+     */
     
     public List<ParOrdenado<String, Float>> calculateRanking(RankType rankType, ExportType exportType, LocalDateTime startDate, LocalDateTime endDate, float distance) {
     	List<ParOrdenado<String, Float>> list = null;
@@ -174,6 +234,13 @@ public class DataManager {
     	
     	return list;
     }
+    /**
+     * Retorna o ranking com os países mais próximos do país com maior número de crescimento de casos no período selecionado
+     * @param distance distancia do país com maior número de crescimento de casos no período selecionado
+     * @param dataInicio Data inicial solicitada
+     * @param dataFim Data final solicitada
+     * @return ranking contendo nome do país e a distância
+     */
     
     private List<ParOrdenado<String, Float>> rankingProximityGrowthRateByPeriod(float distance, LocalDateTime dataInicio, LocalDateTime dataFim) {
     	List<ParOrdenado<String, Float>> listRanking = new ArrayList<>();
@@ -197,6 +264,12 @@ public class DataManager {
         
         return listRanking;
     }
+    /**
+     * Retorna a distância entre dois países
+     * @param ref um país
+     * @param pais outro país
+     * @return distância entre os dois
+     */
     
     private float nearby(Pais ref, Pais pais){
     	double d = Math.sqrt(Math.pow((pais.getLatitude() - ref.getLatitude())*111.12, 2) + Math.pow((pais.getLongitude() - ref.getLongitude())*111.12, 2));
@@ -204,6 +277,13 @@ public class DataManager {
     	return (float) d;
     }
     
+    /**
+     * Faz o ranking de mortalidade por período
+     * 
+     * @param dataInicio Data inicial solicitada
+     * @param dataFim Data final solicitada
+     * @return Lista de par ordenado contendo o ranking
+     */
     
     private List<ParOrdenado<String, Float>> rankingDeathRateByPeriod(LocalDateTime dataInicio, LocalDateTime dataFim) {
     	List<ParOrdenado<String, Float>> listRanking = new ArrayList<>();
@@ -231,7 +311,10 @@ public class DataManager {
         return listRanking;
     }
     
-       
+    /**
+     * 
+     * @return mapa contendo Tipo de caso, data, nome do pais e medicao.
+     */
 
     public HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> getDataMap() {
     	try {
@@ -241,6 +324,10 @@ public class DataManager {
 			return null;
 		}
 	}
+    /**
+     * 
+     * @param map mapa contendo tipo de caso que aponta para um mapa que contém a data que aponta para um país que contém uma medição
+     */
 
 	public void setDataMap(HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> map) {
 		try {
@@ -250,32 +337,35 @@ public class DataManager {
 			
 		}
 	}
+	/**
+	 *  
+	 * @return caminho do projeto
+	 */
 	public String getProjectPath() {
 		return projectPath;
 	}
-	
+	/**
+	 * 
+	 * @param path caminho do projeto
+	 */
 	public void setProjectPath(String path) {
 		this.projectPath = path;
 	}
 	
-	  //remover depois, não tem mais sentido manter 
-    public DataManager.EstatisticaData getMedicaoList(StatusCaso status, LocalDateTime startDate, LocalDateTime endDate){
-		return new EstatisticaData(getDataMap().get(status).get(startDate), getDataMap().get(status).get(endDate));
-    }
+	/**
+     * 
+     * @return mapa de paises
+     */
 	public HashMap<String, Pais> getMapCountries() {
 		return mapCountries;
 	}
-
+	/**
+	 * 
+	 * @param mapCountries mapa com nome do pais e objeto da classe Pais
+	 */
 	public void setMapCountries(HashMap<String, Pais> mapCountries) {
 		this.mapCountries = mapCountries;
 	}
-	public class EstatisticaData {
-    	public HashMap<String, Medicao> mapInicialHashMap;
-    	public HashMap<String, Medicao> mapFinalHashMap;
-    	public EstatisticaData(HashMap<String, Medicao> mapInicialHashMap, HashMap<String, Medicao> mapFinalHashMap) {
-    		this.mapInicialHashMap = mapInicialHashMap;
-    		this.mapFinalHashMap = mapFinalHashMap;
-    	}
-    }    
+    
 }
 

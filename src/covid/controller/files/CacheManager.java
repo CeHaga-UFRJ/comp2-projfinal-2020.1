@@ -15,30 +15,11 @@ import java.util.HashMap;
  * @author Carlos Bravo - cehaga@dcc.ufrjr.br
  */
 public class CacheManager {
-//    public HashMap<String, Medicao> readFile(StatusCaso status, LocalDateTime date){
-//        String fileName = status.toString() + "_" + date.toString() + ".ser";
-//        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("resources/cache/"+fileName))){
-//            return (HashMap<String, Medicao>)ois.readObject();
-//        } catch (IOException | ClassNotFoundException e){
-//            return null;
-//        }
-//    }
-//
-//    public boolean writeFile(HashMap<String, Medicao> map){
-//    	
-//    	//gambiarra, melhorar isso depois
-//    	StatusCaso status = map.get("austria").getStatus();
-//    	LocalDate date = map.get("austria").getMomento();
-//    	
-//        String fileName = status.toString() + "_" + date.toString() + ".ser";
-//        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("resources/cache/"+fileName))){
-//            oos.writeObject(map);
-//        } catch (IOException e){
-//            System.out.println("Erro ao salvar "+fileName);
-//            return false;
-//        }
-//        return true;
-//    }
+	
+	/**
+	 * Serializa o Hashmap com todos os dados do programa
+	 * @param map Hashmap a ser serializado
+	 */
     
     public void serializeData(HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> map) {
     	String fileName = "SERIALIZED_DATA.ser";
@@ -49,6 +30,10 @@ public class CacheManager {
         }
     }
     
+    /**
+	 * Serializa o Hashmap com todos os dados dos países
+	 * @param map Hashmap a ser serializado
+	 */
     public void serializeCountries(HashMap<String, Pais> map) {
     	String fileName = "SERIALIZED_COUNTRIES.ser";
     	try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("WebContent/WEB-INF/DATA/" + fileName))){
@@ -57,6 +42,11 @@ public class CacheManager {
             System.out.println("Erro ao salvar " + fileName);
         }
     }
+    /**
+     * Deserializa o Hashmap com todos os dados do programa
+     * @param map Hashmap a ser deserializado
+     */
+        
     
     public HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> deserializeData() {
     	String fileName = "SERIALIZED_DATA.ser";
@@ -69,6 +59,11 @@ public class CacheManager {
 	        return null;
 	    }
 	}
+    
+    /**
+	 * Deserializa o Hashmap com todos os dados dos países
+	 * @param map Hashmap a ser deserializado
+	 */
     
     public HashMap<String, Pais> deserializeCountries() {
     	String fileName = "SERIALIZED_COUNTRIES.ser";

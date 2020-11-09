@@ -5,6 +5,12 @@ import java.util.List;
 
 import covid.models.Medicao;
 
+
+/**
+ * Classe destinada a representar um conjunto de medições
+ * @author Matheus Oliveira Silva - matheusflups8@gmail.com
+ */
+
 public class MedicaoLists {
 	public List<Medicao> confirmedList;
 	public List<Medicao> deathsList;

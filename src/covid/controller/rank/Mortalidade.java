@@ -8,7 +8,7 @@ import covid.models.Medicao;
 
 /**
  * Classe que representa a estatística para a mortalidade.
- * @author Carlos Bravo - cehaga@dcc.ufrj.br
+ * @author André Gaeta, Carlos Bravo, Gustavo Araújo, Matheus Oliveira, Markson Arguello
  */
 public class Mortalidade extends Estatistica{
 	

@@ -31,7 +31,7 @@ import org.json.simple.JSONObject;
 /**
  * Classe para gestão de dados
  * 
- * @author Carlos Bravo, Matheus Oliveira Silva, Markson Arguello
+ * @author André Gaeta, Carlos Bravo, Gustavo Araújo, Matheus Oliveira, Markson Arguello
  * 
  */
 

@@ -14,6 +14,7 @@ import java.util.InputMismatchException;
 /**
  *
  * Classe para ajudar com funções auxiliares
+ * @author André Gaeta
  *
  */
 

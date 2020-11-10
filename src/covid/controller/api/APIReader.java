@@ -23,7 +23,7 @@ import java.util.HashMap;
 
 /**
  * Classe destinada a ler a API e fazer as manipulacoes necessarias.
- * @author Matheus Oliveira Silva - matheusflups8@gmail.com
+ * @author André Gaeta, Carlos Bravo, Gustavo Araújo, Matheus Oliveira, Markson Arguello
  */
 public class APIReader {
 

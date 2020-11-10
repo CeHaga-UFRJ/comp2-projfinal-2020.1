@@ -14,7 +14,7 @@ import covid.models.ParOrdenado;
 /**
  * Classe destinada a exportar os rankings consultados pelo usuario para arquivos .tsv ou .csv 
  * 
- * @author Matheus Oliveira Silva - matheusflups8@gmail.com
+ * @author Matheus Oliveira Silva, Gustavo Araújo
  *
  */
 

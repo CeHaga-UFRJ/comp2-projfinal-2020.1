@@ -7,6 +7,9 @@ import java.time.LocalDate;
 import java.util.*;
 
 /**
+ * Classe que representa uma estatística que contém um nome,
+ *  lista de medições, data da primeira medição, data a última medição
+ *  
  * @author Carlos Bravo - cehaga@dcc.ufrj.br
  */
 public abstract class Estatistica {
@@ -14,6 +17,12 @@ public abstract class Estatistica {
     private List<Medicao> observacoes;
     private LocalDate dataPrimeira;
     private LocalDate dataUltima;
+    
+    /**
+     * Inclui medições na lista de observações
+     * @param observacao medição a ser adicionada
+     * @return booleano indicando se foi adicionado ou não
+     */
 
     public boolean inclui(Medicao observacao) {
     	if(observacoes == null) {
@@ -29,21 +38,41 @@ public abstract class Estatistica {
         }
         return adicionado;
     }
-
+    
+    /**
+     * Retorna o valor da estatística com base nas datas das medições
+     * @return valor da estatística solicitada
+     */
     public abstract float valor();
 
+    /**
+     * 
+     * @return data da primeira medição
+     */
     public LocalDate dataInicio(){
         return dataPrimeira;
     }
 
+    /**
+     * 
+     * @return data da última medição
+     */
     public LocalDate dataFim(){
         return dataUltima;
     }
 
+    /**
+     * 
+     * @return nome da estatística
+     */
     public String getNome(){
         return nome;
     }
 
+    /**
+     * 
+     * @return lista com medições
+     */
     public List<Medicao> getObservacoes() {
         List<Medicao> list = new ArrayList<>(observacoes);
         list.sort(new CasosMaisRecentesComparator().reversed());

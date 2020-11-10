@@ -17,6 +17,14 @@ import covid.enums.StatusCaso;
 import covid.models.Medicao;
 import covid.models.Pais;
 
+/**
+ * 
+ * Classe para execução de comandos no momento de inicialização do servlet
+ * 
+ * @author 
+ *
+ */
+
 @WebListener
 public class ServletStartupListener implements javax.servlet.ServletContextListener{
 	
@@ -27,6 +35,11 @@ public class ServletStartupListener implements javax.servlet.ServletContextListe
 		DataManager.getDataManager().setMapCountries(deserializeCountryData(context));
 	}
 	
+	/**
+	 * Deserializa as informações sobre o caminho/path do projeto no computador do usuário
+	 * @param context contexto(servlet)
+	 * @return string com o caminho/path do projeto
+	 */
 	public String deserializeProjectPath(ServletContextEvent context) {
 		InputStream inputStream = context.getServletContext().getResourceAsStream("/WEB-INF/DATA/PROJECT_PATH.txt");
 		
@@ -41,7 +54,11 @@ public class ServletStartupListener implements javax.servlet.ServletContextListe
 		DataManager.getDataManager().setProjectPath(path);
 		return path;
 	}
-	
+	/**
+	 * Deserializa os dados de medições salvos em cache
+	 * @param context contexto(servlet)
+	 * @return Hashmap com todas as informações deserializadas
+	 */
 	public HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> deserializeData(ServletContextEvent context) {
 
 		File file = new File(DataManager.getDataManager().projectPath + "/WebContent/WEB-INF/DATA/SERIALIZED_DATA.ser");
@@ -55,7 +72,11 @@ public class ServletStartupListener implements javax.servlet.ServletContextListe
 	        return null;
 	    }
 	}
-	
+	/**
+	 * Deserializa todas as informações dos países salvas em cache
+	 * @param context contexto(servlet)
+	 * @return  Hashmap com as informações dos países
+	 */
 	public HashMap<String, Pais> deserializeCountryData(ServletContextEvent context) {
 		File file = new File(DataManager.getDataManager().projectPath + "/WebContent/WEB-INF/DATA/SERIALIZED_DATA.ser");
 	    try (FileInputStream inputStream = new FileInputStream(file); 

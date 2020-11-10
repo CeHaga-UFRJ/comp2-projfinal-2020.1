@@ -1,5 +1,10 @@
 package covid.enums;
 
+/**
+ * Enum para representar qual ranking o usuário escolher.
+ * @author Markson de Viana Arguello
+ *
+ */
 public enum RankType {
 	MAIOR_NUMERO_CONFIRMADOS,
 	MAIOR_NUMERO_MORTOS,
@@ -10,6 +15,12 @@ public enum RankType {
 	MAIOR_TAXA_MORTALIDADE,
 	MAIOR_PROXIMIDADE_DO_EPICENTRO;
 	
+	
+	/**
+	 * Retorna o enum correspondente à string passada como parâmetro.
+	 * @param string Tipo de ranking em formato de String
+	 * @return Enum correspondente à string passada como parâmetro
+	 */
 	
 	public static RankType stringToRankType(String string) {
 		String stringFormatted = string.trim().toUpperCase();

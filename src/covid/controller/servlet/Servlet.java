@@ -21,6 +21,12 @@ import covid.enums.ExportType;
 import covid.enums.RankType;
 import covid.models.ParOrdenado;
 
+/**
+ * Classe para inicialização e configuração da API
+ * 
+ * @author 
+ *
+ */
 
 @WebServlet("/Servlet")
 public class Servlet extends HttpServlet {
@@ -30,7 +36,10 @@ public class Servlet extends HttpServlet {
     public Servlet() {
         super();
     }
-
+    
+	/**
+	 * Função que é executada ao receber um request, interpretando os dados fornecidos e retornando com uma resposta baseada nos rankings do programa
+	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	response.setHeader("Access-Control-Allow-Origin", "*");	
     	
@@ -61,6 +70,14 @@ public class Servlet extends HttpServlet {
 		response.getWriter().println(jsonArray.toJSONString());
 	}
     
+    /**
+     * Escreve num arquivo um log de todas as requisições que são feitas
+     * @param rankType tipo de ranking a ser calculado
+     * @param startDate data de início
+     * @param endDate data de fim
+     * @param exportType tipo de exportação
+     * @param distanceString distância máxima para cálculo do ranking MAIOR_PROXIMIDADE_DO_EPICENTRO
+     */
     private void saveRequest(String rankType, String startDate, String endDate, String exportType, String distanceString) {
     	String projectPath = DataManager.getDataManager().getProjectPath();
     	

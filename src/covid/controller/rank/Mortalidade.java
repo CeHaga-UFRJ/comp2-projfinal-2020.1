@@ -7,6 +7,7 @@ import covid.comparators.CasosMaisRecentesComparator;
 import covid.models.Medicao;
 
 /**
+ * Classe que representa a estatística para a mortalidade.
  * @author Carlos Bravo - cehaga@dcc.ufrj.br
  */
 public class Mortalidade extends Estatistica{

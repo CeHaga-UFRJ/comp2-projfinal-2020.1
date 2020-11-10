@@ -78,7 +78,7 @@ public class ServletStartupListener implements javax.servlet.ServletContextListe
 	 * @return  Hashmap com as informações dos países
 	 */
 	public HashMap<String, Pais> deserializeCountryData(ServletContextEvent context) {
-		File file = new File(DataManager.getDataManager().projectPath + "/WebContent/WEB-INF/DATA/SERIALIZED_DATA.ser");
+		File file = new File(DataManager.getDataManager().projectPath + "/WebContent/WEB-INF/DATA/SERIALIZED_COUNTRIES.ser");
 	    try (FileInputStream inputStream = new FileInputStream(file); 
 	    		ObjectInputStream ois = new ObjectInputStream(inputStream)){
 	    	return (HashMap<String, Pais>) ois.readObject();

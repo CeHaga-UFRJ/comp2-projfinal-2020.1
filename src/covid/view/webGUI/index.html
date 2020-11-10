@@ -20,7 +20,7 @@
         <div class="main">
             <div class="sidebar">
                 <header>
-                    <form action="" id="form">
+                    <form action="" id="form" onsubmit="return false;">
                         <select id="rankType" name="rankType" onchange="updateDistancia()">
                             <option value="MAIOR_NUMERO_CONFIRMADOS">Maior número de casos</option>
                             <option value="MAIOR_NUMERO_RECUPERADOS">Maior número de recuperados</option>
@@ -32,7 +32,6 @@
                             <option value="MAIOR_PROXIMIDADE_DO_EPICENTRO">Locais mais próximos do local com maior crescimento de casos</option>
                         </select>
         
-                    
                         <br /><br />
                         <label for="startDate">De</label>
                         <input type="date" id="startDate" name="startDate">

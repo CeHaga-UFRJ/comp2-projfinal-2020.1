@@ -24,7 +24,7 @@ import covid.models.ParOrdenado;
 /**
  * Classe para inicialização e configuração da API
  * 
- * @author 
+ * @author André Gaeta
  *
  */
 

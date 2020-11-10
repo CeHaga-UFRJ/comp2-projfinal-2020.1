@@ -10,7 +10,7 @@ import java.util.*;
  * Classe que representa uma estatística que contém um nome,
  *  lista de medições, data da primeira medição, data a última medição
  *  
- * @author Carlos Bravo - cehaga@dcc.ufrj.br
+ * @author André Gaeta, Carlos Bravo, Gustavo Araújo, Matheus Oliveira, Markson Arguello
  */
 public abstract class Estatistica {
     private String nome;

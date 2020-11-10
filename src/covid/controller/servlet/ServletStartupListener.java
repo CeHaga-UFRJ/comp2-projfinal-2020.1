@@ -21,7 +21,7 @@ import covid.models.Pais;
  * 
  * Classe para execução de comandos no momento de inicialização do servlet
  * 
- * @author 
+ * @author André Gaeta
  *
  */
 

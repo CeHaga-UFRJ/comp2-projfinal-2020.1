@@ -6,7 +6,7 @@ import java.util.Comparator;
 
 /**
  * Comparador que ordena uma lista que contém medições por casos mais recentes.
- * @author Carlos Bravo - cehaga@dcc.ufrj.br
+ * @author Carlos Bravo, Gustavo Araújo
  */
 public class CasosMaisRecentesComparator implements Comparator<Medicao> {
     @Override

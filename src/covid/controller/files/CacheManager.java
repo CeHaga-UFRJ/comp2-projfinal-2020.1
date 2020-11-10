@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 /**
- * @author Carlos Bravo - cehaga@dcc.ufrjr.br
+ * @author André Gaeta, Carlos Bravo, Gustavo Araújo, Matheus Oliveira, Markson Arguello
  */
 public class CacheManager {
 	

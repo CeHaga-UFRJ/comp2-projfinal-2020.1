@@ -8,7 +8,7 @@ package covid.models;
  * </p>
  * 
  * 
- * @author Matheus Oliveira Silva, Markson de Viana Arguello
+ * @author  Carlos Bravo, Markson Arguello, Matheus Oliveira
  *
  * @param <T> Tipo que será o nome do pais
  * @param <E> Tipo que será número de casos

@@ -4,7 +4,6 @@ var canvasWrapper = document.getElementById('canvasWrapper');
 
 //requestChartData();
 
-document.getElementById("form").onsubmit = submitAndLoad;
 
 function submitAndLoad(){
     console.log("submitted");
@@ -12,12 +11,14 @@ function submitAndLoad(){
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
     var exportType = document.getElementById("exportType").value;
+    var distance = document.getElementById("distancia").value;
 
-    createExampleChart(rankType, startDate, endDate, exportType);
+    createExampleChart(rankType, startDate, endDate, exportType, distance);
 }
 
-function createExampleChart(rankType, startDate, endDate, exportType){
-    var path = "http://localhost:8080/projFinal/Servlet?rankType=" + rankType + "&startDate=" + startDate + "&endDate=" + endDate + "&exportType=" + exportType;
+function createExampleChart(rankType, startDate, endDate, exportType, distance){
+    var path = "http://localhost:8080/projFinal/Servlet?rankType=" + rankType + "&startDate=" + startDate + "&endDate=" + endDate + "&exportType=" + exportType + "&distance=" + distance;
+    console.log(path);
     fetch(path)
     .then(data => data.json())
     .then(json => createBarChartFromJson(json));

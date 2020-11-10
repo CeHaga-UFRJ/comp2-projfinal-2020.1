@@ -1,9 +1,15 @@
 package covid.controller.servlet;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Scanner;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,22 +38,52 @@ public class Servlet extends HttpServlet {
 		String startDateString = request.getParameter("startDate");
 		String endDateString = request.getParameter("endDate");
 		String exportTypeString = request.getParameter("exportType");
+		String distanceString = request.getParameter("distance");
 		
+		if(distanceString == null || distanceString.isBlank()) distanceString = "";
 		if(exportTypeString == null) exportTypeString = "none";
 		if(rankTypeString == null || startDateString == null || endDateString == null) {
 			response.getWriter().println("[]");
 			return;
 		}
-
+		
+		saveRequest(rankTypeString, startDateString, endDateString, exportTypeString, distanceString);
+		
+		if(distanceString.isBlank()) distanceString = "1";
+		float distance = Float.parseFloat(distanceString);
 		LocalDateTime startDate = LocalDate.parse(startDateString).atStartOfDay();
 		LocalDateTime endDate = LocalDate.parse(endDateString).atStartOfDay();
 		RankType rankType = RankType.stringToRankType(rankTypeString);
 		ExportType exportType = ExportType.stringToExportType(exportTypeString);
 
-		List<ParOrdenado<String, Float>> rankingList = DataManager.getDataManager().calculateRanking(rankType, exportType, startDate, endDate);
+		List<ParOrdenado<String, Float>> rankingList = DataManager.getDataManager().calculateRanking(rankType, exportType, startDate, endDate, distance);
 		JSONArray jsonArray = DataManager.getDataManager().toJson(rankingList);
 		response.getWriter().println(jsonArray.toJSONString());
 	}
+    
+    private void saveRequest(String rankType, String startDate, String endDate, String exportType, String distanceString) {
+    	String projectPath = DataManager.getDataManager().getProjectPath();
+    	
+		String fileName = "REQUEST_LOG.txt";
+    	
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(projectPath + "/WebContent/WEB-INF/DATA/" + fileName, true))){
+            StringBuilder sb = new StringBuilder();
+            sb.append(rankType + ",");
+            sb.append(startDate + ",");
+            sb.append(endDate + ",");
+            sb.append(exportType);
+            if(rankType.equals("MAIOR_PROXIMIDADE_DO_EPICENTRO"))
+            	sb.append("," + distanceString);
+            sb.append("\n");
+            
+            bw.append(sb.toString());
+        }
+        catch (IOException e){
+            System.out.println("Não foi possível gerar o arquivo.");
+        }
+        
+        
+    }
     
 
 }

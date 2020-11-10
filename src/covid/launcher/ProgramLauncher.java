@@ -14,33 +14,42 @@ import java.util.List;
 
 
 import covid.controller.api.APIReader;
+import covid.controller.api.MedicaoLists;
 import covid.controller.data.DataManager;
-import covid.controller.data.DataManager.EstatisticaData;
 import covid.controller.files.CacheManager;
 import covid.enums.RankType;
 import covid.enums.StatusCaso;
 import covid.models.Medicao;
 import covid.models.Pais;
+import covid.util.Tools;
 
 public class ProgramLauncher {
     public static void main(String[] args) {
-    	
-    	
-    	System.out.println("Hello World");
-    	//fetchData();
-    	loadData();
     	initializeServer();
-    	
-//    	LocalDateTime startDate = LocalDateTime.of(2020, 3, 1, 0, 0);
-//    	LocalDateTime endDate = LocalDateTime.of(2020, 11, 1, 0, 0);
-//    	
-//    	System.out.println(DataManager.getDataManager().getMap().get(StatusCaso.CONFIRMADOS).containsKey(startDate.toLocalDate()));
-//
-//    	
-//    	System.out.println(DataManager.getDataManager().calculateRanking(RankType.MAIOR_NUMERO_CONFIRMADOS, startDate, endDate).toJSONString());
-//    	
-    	
-    	//fetchData();
+    	//loadData();
+    	menuInicial();
+    }
+    
+    private static void menuInicial(){
+        System.out.println("API reconfigurada para esse computador. Deseja pegar dados mais recentes? (Pode demorar cerca de 5 minutos.)");
+        System.out.println("1. Sim.");
+        System.out.println("2. Não.");
+
+
+        int escolha = 0;
+        escolha = Tools.getInt();
+        while(escolha < 1 || escolha > 2){
+            System.out.println("Escolha invalida. Digite um numero de 1 a 2.");
+            escolha = Tools.getInt();
+        }
+
+        switch(escolha) {
+            case 1:
+            	fetchData();
+                break;
+            case 2:
+            	return;
+        }
     }
     
     
@@ -63,34 +72,36 @@ public class ProgramLauncher {
     
     public static void fetchData() {
     	DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
-    	Instant dataInicialInstant = Instant.from(formatter.parse("2001-01-01T00:00:00Z"));
-        Instant dataFinalInstant = Instant.from(formatter.parse("3001-03-08T00:00:00Z"));
+    	Instant dataInicialInstant = Instant.from(formatter.parse("2020-01-22T00:00:00Z"));
+        Instant dataFinalInstant = Instant.from(formatter.parse("3020-03-08T00:00:00Z"));
         LocalDateTime dataInicial = LocalDateTime.ofInstant(dataInicialInstant, ZoneOffset.UTC);
         LocalDateTime dataFinal = LocalDateTime.ofInstant(dataFinalInstant, ZoneOffset.UTC);
         
         HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> map = new HashMap<>();
         
-        System.out.println("Fetching CONFIRMADOS");
-    	List<Medicao> listConfirmados = APIReader.getAllCountryCasesByPeriod(StatusCaso.CONFIRMADOS, dataInicial, dataFinal);
-    	map.put(StatusCaso.CONFIRMADOS, medicaoListToHashmap(listConfirmados));
-    	System.out.println("Fetching MORTOS");
-    	List<Medicao> listMortos = APIReader.getAllCountryCasesByPeriod(StatusCaso.MORTOS, dataInicial, dataFinal);
-    	map.put(StatusCaso.MORTOS, medicaoListToHashmap(listMortos));
-    	System.out.println("Fetching RECUPERADOS");
-    	List<Medicao> listRecuperados = APIReader.getAllCountryCasesByPeriod(StatusCaso.RECUPERADOS, dataInicial, dataFinal);
-    	map.put(StatusCaso.RECUPERADOS, medicaoListToHashmap(listRecuperados));
+        MedicaoLists lists = APIReader.getAllCountryCasesByPeriod(dataInicial, dataFinal);
+        
+    	map.put(StatusCaso.CONFIRMADOS, medicaoListToHashmap(lists.confirmedList));
+
+    	map.put(StatusCaso.MORTOS, medicaoListToHashmap(lists.deathsList));
+
+    	map.put(StatusCaso.RECUPERADOS, medicaoListToHashmap(lists.recoveredList));
 
     	CacheManager cm = new CacheManager();
     	System.out.println("Serializing Data");
     	cm.serializeData(map);
+    	cm.serializeCountries(DataManager.getDataManager().getMapCountries());
+    	
     }
     
     public static void loadData() {
     	CacheManager cm = new CacheManager();
     	HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> map = cm.deserializeData();
+    	HashMap<String, Pais> mapCountries = cm.deserializeCountries(); 
     	DataManager dm = DataManager.getDataManager();
-    	if(dm.getMap() == null)
-			dm.setMap(map);
+    	if(dm.getDataMap() == null)
+			dm.setDataMap(map);
+    	dm.setMapCountries(mapCountries);
     }
     
     public static void initializeServer() {
@@ -108,28 +119,5 @@ public class ProgramLauncher {
         }
     	
     }
-    
-    
-    
-    public static void teste() {
-    	
-    	System.out.println("Testando");
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
-    	Instant dataInicialInstant = Instant.from(formatter.parse("2020-03-01T00:00:00Z"));
-        Instant dataFinalInstant = Instant.from(formatter.parse("2020-04-01T00:00:00Z"));
-        LocalDateTime dataInicial = LocalDateTime.ofInstant(dataInicialInstant, ZoneOffset.UTC);
-        LocalDateTime dataFinal = LocalDateTime.ofInstant(dataFinalInstant, ZoneOffset.UTC);
-        
-        StatusCaso statusCaso = StatusCaso.CONFIRMADOS;
-
-
-		EstatisticaData data = DataManager.getDataManager().getMedicaoList(statusCaso, dataInicial, dataFinal);
-		
-		System.out.println(data.mapInicialHashMap.get("austria").getCasos());
-    }
-    
-    
-    
-    
+       
 }

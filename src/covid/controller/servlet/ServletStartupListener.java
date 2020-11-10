@@ -1,5 +1,7 @@
 package covid.controller.servlet;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -42,8 +44,9 @@ public class ServletStartupListener implements javax.servlet.ServletContextListe
 	
 	public HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> deserializeData(ServletContextEvent context) {
 
-		InputStream inputStream = context.getServletContext().getResourceAsStream("/WEB-INF/DATA/SERIALIZED_DATA.ser");
-	    try (ObjectInputStream ois = new ObjectInputStream(inputStream)){
+		File file = new File(DataManager.getDataManager().projectPath + "/WebContent/WEB-INF/DATA/SERIALIZED_DATA.ser");
+	    try (FileInputStream inputStream = new FileInputStream(file); 
+	    		ObjectInputStream ois = new ObjectInputStream(inputStream)){
 	    	return (HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>>) ois.readObject();
 	    } 
 	    catch (IOException | ClassNotFoundException e){
@@ -54,8 +57,9 @@ public class ServletStartupListener implements javax.servlet.ServletContextListe
 	}
 	
 	public HashMap<String, Pais> deserializeCountryData(ServletContextEvent context) {
-		InputStream inputStream = context.getServletContext().getResourceAsStream("/WEB-INF/DATA/SERIALIZED_COUNTRIES.ser");
-	    try (ObjectInputStream ois = new ObjectInputStream(inputStream)){
+		File file = new File(DataManager.getDataManager().projectPath + "/WebContent/WEB-INF/DATA/SERIALIZED_DATA.ser");
+	    try (FileInputStream inputStream = new FileInputStream(file); 
+	    		ObjectInputStream ois = new ObjectInputStream(inputStream)){
 	    	return (HashMap<String, Pais>) ois.readObject();
 	    } 
 	    catch (IOException | ClassNotFoundException e){

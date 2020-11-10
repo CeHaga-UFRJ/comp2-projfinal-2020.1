@@ -103,9 +103,7 @@ public class APIReader {
                     }
                     
                     
-                    if((((JSONObject)respostaJson.get(1)).get("Province").toString() != null ||
-                    		!(((JSONObject)respostaJson.get(1)).get("Province").toString().isBlank()
-                    		))){ continue;}
+                    
                     
                     JSONObject firstElement = ((JSONObject)respostaJson.get(0));
                     

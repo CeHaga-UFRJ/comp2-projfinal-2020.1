@@ -26,9 +26,8 @@ import covid.util.Tools;
 public class ProgramLauncher {
     public static void main(String[] args) {
     	initializeServer();
-    	loadData();
-    	//menuInicial();
-    	System.out.println("asd");
+    	//loadData();
+    	menuInicial();
     }
     
     private static void menuInicial(){

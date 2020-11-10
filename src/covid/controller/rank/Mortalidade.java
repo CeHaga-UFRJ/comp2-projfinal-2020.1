@@ -18,7 +18,6 @@ public class Mortalidade extends Estatistica{
     	List<Medicao> listMortes = getObservacoesMortes();
         int casos = listCasos.get(listCasos.size()-1).getCasos() - listCasos.get(0).getCasos();
         int mortes = listMortes.get(listMortes.size()-1).getCasos() - listMortes.get(0).getCasos();
-        
         if(casos == 0) casos = 1;
         return mortes/(float)casos;
     }

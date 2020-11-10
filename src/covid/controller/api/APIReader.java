@@ -64,7 +64,7 @@ public class APIReader {
             String APIurl = "https://api.covid19api.com/country/" + paisName +
                             "?from=" + strDataInicial +
                             "&to="+ strDataFinal;
-            if(paisName.equals("united-states")) {continue;}
+            if(paisName.equals("united-states")) continue;
 //            		System.err.println("USA");
 //            		LocalDateTime newDataFinal = LocalDateTime.parse(strDataInicial).plusDays(1);
 //            		APIurl = "https://api.covid19api.com/country/" + paisName +
@@ -102,7 +102,7 @@ public class APIReader {
                     	continue;
                     }
                     
-                    
+                    if(!((JSONObject)respostaJson.get(1)).get("Province").toString().isBlank()) continue;
                     
                     
                     JSONObject firstElement = ((JSONObject)respostaJson.get(0));
@@ -129,8 +129,8 @@ public class APIReader {
                             int qtdRecovered = Integer.parseInt(((JSONObject) x).get("Recovered").toString());
 
                             Medicao medicaoConfirmed = new Medicao(pais, dataMomento, qtdConfirmed, StatusCaso.CONFIRMADOS);
-                            Medicao medicaoDeaths = new Medicao(pais, dataMomento, qtdConfirmed, StatusCaso.MORTOS);
-                            Medicao medicaoRecovered = new Medicao(pais, dataMomento, qtdConfirmed, StatusCaso.RECUPERADOS);
+                            Medicao medicaoDeaths = new Medicao(pais, dataMomento, qtdDeaths, StatusCaso.MORTOS);
+                            Medicao medicaoRecovered = new Medicao(pais, dataMomento, qtdRecovered, StatusCaso.RECUPERADOS);
                             
                             
                             medicaoLists.confirmedList.add(medicaoConfirmed);

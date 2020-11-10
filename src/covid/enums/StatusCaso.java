@@ -1,7 +1,8 @@
 package covid.enums;
 
 /**
- * @author Markson Arguello - marksonva@dcc.ufrj.br
+ * Enum para representar o status dos casos
+ * @author Markson de Viana Arguello
  */
 public enum StatusCaso {
     CONFIRMADOS,

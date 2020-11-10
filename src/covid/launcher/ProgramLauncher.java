@@ -1,6 +1,8 @@
 package covid.launcher;
 
 import java.io.BufferedWriter;
+
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,13 +25,21 @@ import covid.models.Medicao;
 import covid.models.Pais;
 import covid.util.Tools;
 
+/**
+ * Classe para inicialização e configuração da API localmente 
+ * @author 
+ *
+ */
+
 public class ProgramLauncher {
     public static void main(String[] args) {
     	initializeServer();
     	//loadData();
     	menuInicial();
     }
-    
+    /**
+     * Mostra um menu para facilitar as escolhas do usuário
+     */
     private static void menuInicial(){
         System.out.println("API reconfigurada para esse computador. Deseja pegar dados mais recentes? (Pode demorar cerca de 5 minutos.)");
         System.out.println("1. Sim.");
@@ -52,6 +62,11 @@ public class ProgramLauncher {
         }
     }
     
+    /**
+     * Converte uma lista de medições em um Hashmap equivalente, com chaves de data e slug do país
+     * @param lista de medições
+     * @return hashmap equivalente à lista
+     */
     
     public static HashMap<LocalDate, HashMap<String, Medicao>> medicaoListToHashmap(List<Medicao> list) {
     	HashMap<LocalDate, HashMap<String, Medicao>> dateMap = new HashMap<>();
@@ -69,6 +84,10 @@ public class ProgramLauncher {
     	
     	return dateMap;
     }
+    
+    /**
+     * Faz novas requisições de dados ao servidor
+     */
     
     public static void fetchData() {
     	DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
@@ -94,6 +113,10 @@ public class ProgramLauncher {
     	
     }
     
+    /**
+     * Carrega os dados armazenados em cache para teste local
+     */
+    
     public static void loadData() {
     	CacheManager cm = new CacheManager();
     	HashMap<StatusCaso, HashMap<LocalDate, HashMap<String, Medicao>>> map = cm.deserializeData();
@@ -103,6 +126,9 @@ public class ProgramLauncher {
 			dm.setDataMap(map);
     	dm.setMapCountries(mapCountries);
     }
+    /**
+     * Configura o servidor, salvando o caminho/path do projeto do computador do usuário
+     */
     
     public static void initializeServer() {
     	String projectPath = new File("").getAbsolutePath();

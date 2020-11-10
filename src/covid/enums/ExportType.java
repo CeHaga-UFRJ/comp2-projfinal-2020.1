@@ -8,6 +8,11 @@ public enum ExportType {
 	CSV,
 	NONE;
 	
+	/**
+	 * Retorna o enum correspondente à string passada como parâmetro.
+	 * @param string Tipo de ranking em formato de String
+	 * @return Enum correspondente à string passada como parâmetro
+	 */
 	public static ExportType stringToExportType(String string) {
 		String stringFormatted = string.trim().toUpperCase();
 		switch(stringFormatted) {
